@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="ms">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monarch-Style Financial Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -13,17 +13,17 @@
 </head>
 <body class="bg-[#f8fafc] text-slate-800 min-h-screen antialiased flex flex-col md:flex-row">
 
-    <aside class="w-full md:w-64 bg-white border-b md:border-b-0 md:border-r border-slate-200/80 p-6 flex flex-col justify-between">
+    <aside class="w-full md:w-64 bg-white border-b md:border-b-0 md:border-r border-slate-200 p-6 flex flex-col justify-between">
         <div>
             <div class="flex items-center gap-2.5 mb-8 px-2">
-                <div class="bg-[#1e3a8a] p-2 rounded-xl text-white">
+                <div class="bg-[#1e3a8a] p-2 rounded-xl text-white flex items-center justify-center">
                     <i data-lucide="layers" class="w-5 h-5"></i>
                 </div>
                 <span class="text-xl font-bold tracking-tight text-[#0f172a]">monarch<span class="text-blue-600">.</span></span>
             </div>
             
             <nav class="space-y-1">
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 bg-blue-50/60 text-blue-700 font-semibold rounded-xl text-sm transition">
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 bg-blue-50 text-blue-700 font-semibold rounded-xl text-sm transition">
                     <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard
                 </a>
                 <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-xl font-medium transition text-sm">
@@ -54,19 +54,19 @@
         <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
                 <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Halo, Selamat Datang</h1>
-                <p class="text-sm text-slate-500 mt-0.5">Berikut ringkasan kekayaan bersih dan keuangan Anda hari ini.</p>
+                <p class="text-sm text-slate-500 mt-0.5">Berikut ringkasan kekayaan bersih dan kewangan anda hari ini.</p>
             </div>
             <div class="bg-white border border-slate-200 px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 shadow-sm flex items-center gap-2">
-                <i data-lucide="calendar" class="w-3.5 h-3.5 text-slate-400"></i> Juni 2026
+                <i data-lucide="calendar" class="w-3.5 h-3.5 text-slate-400"></i> Jun 2026
             </div>
         </header>
 
-        <div class="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div>
                 <span class="text-xs font-bold tracking-wider text-slate-400 uppercase">Kekayaan Bersih (Net Worth)</span>
                 <h2 id="total-balance" class="text-4xl font-extrabold text-slate-900 tracking-tight mt-1">Rp 0</h2>
                 <p class="text-xs text-emerald-600 font-medium mt-1.5 flex items-center gap-1">
-                    <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> Selalu diperbarui secara real-time
+                    <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> Diperbarui secara real-time
                 </p>
             </div>
             
@@ -83,17 +83,17 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="lg:col-span-2 bg-white border border-slate-200/80 p-6 rounded-2xl shadow-sm">
+            <div class="lg:col-span-2 bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
                 <div class="mb-4">
                     <h3 class="text-sm font-bold text-slate-900">Perbandingan Arus Kas</h3>
                     <p class="text-xs text-slate-400">Visualisasi pemasukan vs pengeluaran saat ini</p>
                 </div>
                 <div class="h-56 flex items-center justify-center">
-                    <canvas id="monarchChart"></canvas>
+                    <canvas id="monarchChart" style="max-height: 220px; width: 100%;"></canvas>
                 </div>
             </div>
 
-            <div class="bg-white border border-slate-200/80 p-6 rounded-2xl shadow-sm">
+            <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
                 <h3 class="text-sm font-bold text-slate-900 mb-4 flex items-center gap-1.5">
                     <i data-lucide="plus-circle" class="text-blue-600 w-4 h-4"></i> Catat Transaksi Baru
                 </h3>
@@ -120,12 +120,145 @@
             </div>
         </div>
 
-        <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm overflow-hidden">
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
             <div class="p-6 border-b border-slate-100 flex justify-between items-center">
                 <div>
                     <h3 class="text-sm font-bold text-slate-900">Transaksi Terkini</h3>
-                    <p class="text-xs text-slate-400">Daftar mutasi rekening dan pengeluaran Anda</p>
+                    <p class="text-xs text-slate-400">Daftar mutasi rekening dan pengeluaran anda</p>
                 </div>
             </div>
             
-            <div class="divide-y divide-slate-100" id="
+            <div class="divide-y divide-slate-100" id="transaction-list">
+                </div>
+        </div>
+
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        const balanceEl = document.getElementById('total-balance');
+        const incomeEl = document.getElementById('total-income');
+        const expenseEl = document.getElementById('total-expense');
+        const listEl = document.getElementById('transaction-list');
+        const form = document.getElementById('transaction-form');
+        const textInput = document.getElementById('text');
+        const amountInput = document.getElementById('amount');
+        const typeInput = document.getElementById('type');
+
+        let transactions = localStorage.getItem('monarch_tx') ? JSON.parse(localStorage.getItem('monarch_tx')) : [];
+        let monarchChart;
+
+        function formatRupiah(val) {
+            return 'Rp ' + Number(val).toLocaleString('id-ID');
+        }
+
+        function initChart(income, expense) {
+            const ctx = document.getElementById('monarchChart').getContext('2d');
+            monarchChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Pemasukan', 'Pengeluaran'],
+                    datasets: [{
+                        data: [income, expense],
+                        backgroundColor: ['#10b981', '#0f172a'],
+                        borderRadius: 8,
+                        borderWidth: 0,
+                        barThickness: 45
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { grid: { color: '#f1f5f9' }, ticks: { color: '#94a3b8', font: { size: 10 } } },
+                        x: { grid: { display: false }, ticks: { color: '#475569', font: { size: 11, weight: '500' } } }
+                    }
+                }
+            });
+        }
+
+        function updateDashboard() {
+            const income = transactions.filter(t => t.type === 'income').reduce((acc, t) => acc + t.amount, 0);
+            const expense = transactions.filter(t => t.type === 'expense').reduce((acc, t) => acc + t.amount, 0);
+            const netWorth = income - expense;
+
+            balanceEl.innerText = formatRupiah(netWorth);
+            incomeEl.innerText = formatRupiah(income);
+            expenseEl.innerText = formatRupiah(expense);
+
+            if (monarchChart) {
+                monarchChart.data.datasets[0].data = [income, expense];
+                monarchChart.update();
+            }
+
+            renderList();
+        }
+
+        function renderList() {
+            listEl.innerHTML = '';
+            if (transactions.length === 0) {
+                listEl.innerHTML = '<p class="text-slate-400 text-xs text-center py-10">Belum ada catatan transaksi.</p>';
+                return;
+            }
+
+            [...transactions].reverse().forEach(t => {
+                const row = document.createElement('div');
+                const isIncome = t.type === 'income';
+                row.className = "flex justify-between items-center p-4 hover:bg-slate-50 transition duration-150";
+                
+                row.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <div class="w-8 h-8 rounded-full ${isIncome ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-600'} flex items-center justify-center">
+                            <i data-lucide="${isIncome ? 'arrow-down-left' : 'shopping-bag'}" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-semibold text-slate-800">${t.text}</p>
+                            <p class="text-[10px] text-slate-400">Akun Utama</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-xs font-bold ${isIncome ? 'text-emerald-600' : 'text-slate-900'}">
+                            ${isIncome ? '+' : '-'} ${formatRupiah(t.amount)}
+                        </span>
+                        <button onclick="deleteTransaction(${t.id})" class="text-slate-300 hover:text-rose-500 transition cursor-pointer">
+                            <i data-lucide="trash" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                `;
+                listEl.appendChild(row);
+            });
+            lucide.createIcons();
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if(!textInput.value || !amountInput.value) return;
+
+            transactions.push({
+                id: Date.now(),
+                text: textInput.value,
+                amount: parseFloat(amountInput.value),
+                type: typeInput.value
+            });
+
+            localStorage.setItem('monarch_tx', JSON.stringify(transactions));
+            updateDashboard();
+            textInput.value = '';
+            amountInput.value = '';
+        });
+
+        function deleteTransaction(id) {
+            transactions = transactions.filter(t => t.id !== id);
+            localStorage.setItem('monarch_tx', JSON.stringify(transactions));
+            updateDashboard();
+        }
+
+        const initInc = transactions.filter(t => t.type === 'income').reduce((acc, t) => acc + t.amount, 0);
+        const initExp = transactions.filter(t => t.type === 'expense').reduce((acc, t) => acc + t.amount, 0);
+        initChart(initInc, initExp);
+        updateDashboard();
+    </script>
+</body>
+</html>
