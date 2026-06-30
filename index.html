@@ -3,140 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monarch-Style Financial Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <title>Monarch Premium Dashboard</title>
+    
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: #f8fafc; color: #334155; display: flex; min-height: 100vh; flex-direction: column; }
+        @media (min-width: 768px) { body { flex-direction: row; } }
+        
+        /* Sidebar Styles */
+        aside { background-color: #ffffff; border-bottom: 1px solid #e2e8f0; width: 100%; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
+        @media (min-width: 768px) { aside { width: 260px; border-bottom: none; border-r: 1px solid #e2e8f0; height: 100vh; position: fixed; } }
+        .logo-area { display: flex; items-center; gap: 10px; margin-bottom: 32px; font-size: 20px; font-weight: 700; color: #0f172a; }
+        .logo-icon { background-color: #1e3a8a; color: white; padding: 6px 12px; rounded-radius: 8px; font-weight: 900; border-radius: 8px; }
+        .logo-dot { color: #2563eb; }
+        nav { display: flex; flex-direction: column; gap: 4px; }
+        nav a { display: flex; items-center; gap: 12px; padding: 10px 16px; color: #64748b; text-decoration: none; font-size: 14px; font-weight: 500; border-radius: 12px; transition: 0.2s; }
+        nav a.active { background-color: #f0f5ff; color: #1d4ed8; font-weight: 600; }
+        nav a:hover:not(.active) { background-color: #f8fafc; color: #0f172a; }
+
+        /* Main Content Styles */
+        main { flex-1; width: 100%; padding: 24px; max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+        @media (min-width: 768px) { main { margin-left: 260px; padding: 40px; } }
+        
+        /* Header */
+        header { display: flex; justify-content: space-between; align-items: tracking; flex-wrap: wrap; gap: 16px; }
+        header h1 { font-size: 24px; font-weight: 700; color: #0f172a; letter-spacing: -0.5px; }
+        header p { font-size: 14px; color: #64748b; margin-top: 2px; }
+        .date-badge { background: white; border: 1px solid #e2e8f0; padding: 8px 16px; border-radius: 12px; font-size: 12px; font-weight: 600; color: #475569; display: flex; align-items: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+
+        /* Net Worth Card Area */
+        .networth-card { background: white; border: 1px solid #e2e8f0; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+        @media (min-width: 768px) { .networth-card { flex-direction: row; align-items: center; } }
+        .nw-label { font-size: 11px; font-weight: 700; uppercase; tracking: 0.5px; color: #94a3b8; text-transform: uppercase; }
+        .nw-val { font-size: 36px; font-weight: 800; color: #0f172a; letter-spacing: -1px; margin-top: 4px; }
+        .nw-status { font-size: 12px; color: #10b981; font-weight: 500; margin-top: 6px; }
+        .cashflow-summary { display: flex; gap: 40px; border-top: 1px solid #f1f5f9; pt: 16px; width: 100%; }
+        @media (min-width: 768px) { .cashflow-summary { border-top: none; width: auto; } }
+        .cf-label { font-size: 11px; font-weight: 500; color: #94a3b8; }
+        .cf-val-in { font-size: 18px; font-weight: 700; color: #10b981; margin-top: 2px; }
+        .cf-val-out { font-size: 18px; font-weight: 700; color: #0f172a; margin-top: 2px; }
+
+        /* Grid Layout */
+        .grid-layout { display: grid; grid-template-columns: 1fr; gap: 24px; }
+        @media (min-width: 992px) { .grid-layout { grid-template-columns: 2fr 1fr; } }
+
+        /* Common Box Container */
+        .box-container { background: white; border: 1px solid #e2e8f0; border-radius: 20px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+        .box-title { font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+
+        /* Form Styles */
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 11px; font-weight: 600; color: #64748b; margin-bottom: 6px; }
+        .form-group input, .form-group select { width: 100%; background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 14px; font-size: 13px; color: #334155; outline: none; transition: 0.2s; }
+        .form-group input:focus, .form-group select:focus { border-color: #2563eb; background-color: white; }
+        .btn-submit { width: 100%; background-color: #1e3a8a; color: white; border: none; font-size: 13px; font-weight: 600; padding: 12px; border-radius: 12px; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+        .btn-submit:hover { background-color: #1d4ed8; }
+
+        /* Transaction Log View */
+        .tx-list { display: flex; flex-direction: column; }
+        .tx-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid #f1f5f9; }
+        .tx-item:last-child { border-bottom: none; }
+        .tx-info { display: flex; align-items: center; gap: 12px; }
+        .tx-icon-dot { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; }
+        .dot-in { background-color: #ecfdf5; color: #10b981; }
+        .dot-out { background-color: #f8fafc; color: #64748b; }
+        .tx-name { font-size: 13px; font-weight: 600; color: #1e293b; }
+        .tx-meta { font-size: 10px; color: #94a3b8; margin-top: 1px; }
+        .tx-amount { font-size: 13px; font-weight: 700; }
+        .amt-in { color: #10b981; }
+        .amt-out { color: #0f172a; }
+        .btn-delete { background: none; border: none; color: #cbd5e1; cursor: pointer; font-size: 12px; margin-left: 12px; transition: 0.2s; }
+        .btn-delete:hover { color: #ef4444; }
+        
+        /* Custom Bar Chart Simulation using HTML/CSS */
+        .chart-flow { display: flex; justify-content: space-around; align-items: flex-end; height: 160px; padding: 20px 0; background: #f8fafc; border-radius: 12px; }
+        .chart-column { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 60px; }
+        .bar { width: 36px; border-radius: 6px 6px 0 0; transition: height 0.5s ease; height: 10px; }
+        .bar-in { background-color: #10b981; }
+        .bar-out { background-color: #0f172a; }
+        .bar-label { font-size: 11px; font-weight: 500; color: #64748b; }
     </style>
 </head>
-<body class="bg-[#f8fafc] text-slate-800 min-h-screen antialiased flex flex-col md:flex-row">
+<body>
 
-    <aside class="w-full md:w-64 bg-white border-b md:border-b-0 md:border-r border-slate-200 p-6 flex flex-col justify-between">
+    <aside>
         <div>
-            <div class="flex items-center gap-2.5 mb-8 px-2">
-                <div class="bg-[#1e3a8a] p-2 rounded-xl text-white flex items-center justify-center">
-                    <i data-lucide="layers" class="w-5 h-5"></i>
-                </div>
-                <span class="text-xl font-bold tracking-tight text-[#0f172a]">monarch<span class="text-blue-600">.</span></span>
+            <div class="logo-area">
+                <span class="logo-icon">M</span>
+                <span>monarch<span class="logo-dot">.</span></span>
             </div>
-            
-            <nav class="space-y-1">
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 bg-blue-50 text-blue-700 font-semibold rounded-xl text-sm transition">
-                    <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard
-                </a>
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-xl font-medium transition text-sm">
-                    <i data-lucide="arrow-left-right" class="w-4 h-4"></i> Transaksi
-                </a>
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-xl font-medium transition text-sm">
-                    <i data-lucide="pie-chart" class="w-4 h-4"></i> Alokasi Budget
-                </a>
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-xl font-medium transition text-sm">
-                    <i data-lucide="trending-up" class="w-4 h-4"></i> Investasi
-                </a>
+            <nav>
+                <a href="#" class="active">📊 Dashboard</a>
+                <a href="#">🔄 Transaksi</a>
+                <a href="#">🍰 Alokasi Budget</a>
+                <a href="#">📈 Investasi</a>
             </nav>
-        </div>
-
-        <div class="border-t border-slate-100 pt-4 mt-6 hidden md:flex items-center gap-3">
-            <div class="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-slate-700 text-xs">
-                U
-            </div>
-            <div>
-                <p class="text-xs font-semibold text-slate-800">User Akun</p>
-                <p class="text-[10px] text-slate-400">Premium Plan</p>
-            </div>
         </div>
     </aside>
 
-    <main class="flex-1 bg-[#f8fafc] p-6 md:p-10 max-w-6xl mx-auto w-full space-y-8 overflow-y-auto">
-        
-        <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <main>
+        <header>
             <div>
-                <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Halo, Selamat Datang</h1>
-                <p class="text-sm text-slate-500 mt-0.5">Berikut ringkasan kekayaan bersih dan kewangan anda hari ini.</p>
+                <h1>Halo, Selamat Datang</h1>
+                <p>Berikut ringkasan kekayaan bersih dan kewangan anda hari ini.</p>
             </div>
-            <div class="bg-white border border-slate-200 px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 shadow-sm flex items-center gap-2">
-                <i data-lucide="calendar" class="w-3.5 h-3.5 text-slate-400"></i> Jun 2026
-            </div>
+            <div class="date-badge">📅 Jun 2026</div>
         </header>
 
-        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div class="networth-card">
             <div>
-                <span class="text-xs font-bold tracking-wider text-slate-400 uppercase">Kekayaan Bersih (Net Worth)</span>
-                <h2 id="total-balance" class="text-4xl font-extrabold text-slate-900 tracking-tight mt-1">Rp 0</h2>
-                <p class="text-xs text-emerald-600 font-medium mt-1.5 flex items-center gap-1">
-                    <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> Diperbarui secara real-time
-                </p>
+                <div class="nw-label">Kekayaan Bersih (Net Worth)</div>
+                <div id="total-balance" class="nw-val">Rp 0</div>
+                <div class="nw-status">✓ Sentiasa dikemaskini secara langsung</div>
             </div>
-            
-            <div class="flex gap-8 border-t md:border-t-0 md:border-l border-slate-100 pt-4 md:pt-0 md:pl-8 w-full md:w-auto justify-between md:justify-start">
+            <div class="cashflow-summary">
                 <div>
-                    <span class="text-[11px] font-medium text-slate-400 block">Pemasukan Bulan Ini</span>
-                    <span id="total-income" class="text-lg font-bold text-emerald-600 mt-0.5 block">Rp 0</span>
+                    <div class="cf-label">Pemasukan Bulan Ini</div>
+                    <div id="total-income" class="cf-val-in">Rp 0</div>
                 </div>
                 <div>
-                    <span class="text-[11px] font-medium text-slate-400 block">Pengeluaran Bulan Ini</span>
-                    <span id="total-expense" class="text-lg font-bold text-slate-900 mt-0.5 block">Rp 0</span>
+                    <div class="cf-label">Pengeluaran Bulan Ini</div>
+                    <div id="total-expense" class="cf-val-out">Rp 0</div>
                 </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="lg:col-span-2 bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
-                <div class="mb-4">
-                    <h3 class="text-sm font-bold text-slate-900">Perbandingan Arus Kas</h3>
-                    <p class="text-xs text-slate-400">Visualisasi pemasukan vs pengeluaran saat ini</p>
-                </div>
-                <div class="h-56 flex items-center justify-center">
-                    <canvas id="monarchChart" style="max-height: 220px; width: 100%;"></canvas>
+        <div class="grid-layout">
+            <div class="box-container">
+                <div class="box-title">📊 Perbandingan Arus Kas</div>
+                <div class="chart-flow">
+                    <div class="chart-column">
+                        <div id="bar-income" class="bar bar-in" style="height: 10px;"></div>
+                        <div class="bar-label">Masuk</div>
+                    </div>
+                    <div class="chart-column">
+                        <div id="bar-expense" class="bar bar-out" style="height: 10px;"></div>
+                        <div class="bar-label">Keluar</div>
+                    </div>
                 </div>
             </div>
 
-            <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
-                <h3 class="text-sm font-bold text-slate-900 mb-4 flex items-center gap-1.5">
-                    <i data-lucide="plus-circle" class="text-blue-600 w-4 h-4"></i> Catat Transaksi Baru
-                </h3>
-                <form id="transaction-form" class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-500 mb-1">Keterangan / Merchant</label>
-                        <input type="text" id="text" placeholder="cth: Starbucks, Gaji Kantor" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs focus:outline-none focus:border-blue-500 focus:bg-white transition text-slate-800" required />
+            <div class="box-container">
+                <div class="box-title">➕ Catat Transaksi</div>
+                <form id="transaction-form">
+                    <div class="form-group">
+                        <label>Keterangan / Merchant</label>
+                        <input type="text" id="text" placeholder="cth: Gaji, Starbucks" required />
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-500 mb-1">Jumlah Transaksi (Rp)</label>
-                        <input type="number" id="amount" placeholder="Nominal angka" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs focus:outline-none focus:border-blue-500 focus:bg-white transition text-slate-800" required />
+                    <div class="form-group">
+                        <label>Jumlah Transaksi (Rp)</label>
+                        <input type="number" id="amount" placeholder="Nominal Amaun" required />
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-500 mb-1">Kategori</label>
-                        <select id="type" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs focus:outline-none focus:border-blue-500 focus:bg-white transition text-slate-800">
+                    <div class="form-group">
+                        <label>Jenis Kategori</label>
+                        <select id="type">
                             <option value="income">Pemasukan (+)</option>
                             <option value="expense">Pengeluaran (-)</option>
                         </select>
                     </div>
-                    <button type="submit" class="w-full bg-[#1e3a8a] hover:bg-blue-900 text-white font-semibold py-2.5 px-4 rounded-xl text-xs transition shadow-sm cursor-pointer text-center mt-2">
-                        Simpan ke Log
-                    </button>
+                    <button type="submit" class="btn-submit">Simpan Transaksi</button>
                 </form>
             </div>
         </div>
 
-        <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
-            <div class="p-6 border-b border-slate-100 flex justify-between items-center">
-                <div>
-                    <h3 class="text-sm font-bold text-slate-900">Transaksi Terkini</h3>
-                    <p class="text-xs text-slate-400">Daftar mutasi rekening dan pengeluaran anda</p>
-                </div>
-            </div>
-            
-            <div class="divide-y divide-slate-100" id="transaction-list">
+        <div class="box-container">
+            <div class="box-title">📋 Transaksi Terkini</div>
+            <div class="tx-list" id="transaction-list">
                 </div>
         </div>
-
     </main>
 
     <script>
-        lucide.createIcons();
-
         const balanceEl = document.getElementById('total-balance');
         const incomeEl = document.getElementById('total-income');
         const expenseEl = document.getElementById('total-expense');
@@ -145,38 +182,14 @@
         const textInput = document.getElementById('text');
         const amountInput = document.getElementById('amount');
         const typeInput = document.getElementById('type');
+        
+        const barIncome = document.getElementById('bar-income');
+        const barExpense = document.getElementById('bar-expense');
 
-        let transactions = localStorage.getItem('monarch_tx') ? JSON.parse(localStorage.getItem('monarch_tx')) : [];
-        let monarchChart;
+        let transactions = localStorage.getItem('monarch_pure_tx') ? JSON.parse(localStorage.getItem('monarch_pure_tx')) : [];
 
         function formatRupiah(val) {
             return 'Rp ' + Number(val).toLocaleString('id-ID');
-        }
-
-        function initChart(income, expense) {
-            const ctx = document.getElementById('monarchChart').getContext('2d');
-            monarchChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Pemasukan', 'Pengeluaran'],
-                    datasets: [{
-                        data: [income, expense],
-                        backgroundColor: ['#10b981', '#0f172a'],
-                        borderRadius: 8,
-                        borderWidth: 0,
-                        barThickness: 45
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { grid: { color: '#f1f5f9' }, ticks: { color: '#94a3b8', font: { size: 10 } } },
-                        x: { grid: { display: false }, ticks: { color: '#475569', font: { size: 11, weight: '500' } } }
-                    }
-                }
-            });
         }
 
         function updateDashboard() {
@@ -188,10 +201,13 @@
             incomeEl.innerText = formatRupiah(income);
             expenseEl.innerText = formatRupiah(expense);
 
-            if (monarchChart) {
-                monarchChart.data.datasets[0].data = [income, expense];
-                monarchChart.update();
-            }
+            // Update Tinggi Grafik Simulasi secara Dinamik
+            const maxVal = Math.max(income, expense, 1);
+            const incHeight = (income / maxVal) * 120 + 10; // min 10px max 130px
+            const expHeight = (expense / maxVal) * 120 + 10;
+            
+            barIncome.style.height = `${incHeight}px`;
+            barExpense.style.height = `${expHeight}px`;
 
             renderList();
         }
@@ -199,37 +215,34 @@
         function renderList() {
             listEl.innerHTML = '';
             if (transactions.length === 0) {
-                listEl.innerHTML = '<p class="text-slate-400 text-xs text-center py-10">Belum ada catatan transaksi.</p>';
+                listEl.innerHTML = '<p style="color: #94a3b8; font-size: 12px; text-align: center; padding: 30px 0;">Belum ada catatan transaksi.</p>';
                 return;
             }
 
             [...transactions].reverse().forEach(t => {
-                const row = document.createElement('div');
                 const isIncome = t.type === 'income';
-                row.className = "flex justify-between items-center p-4 hover:bg-slate-50 transition duration-150";
+                const item = document.createElement('div');
+                item.className = "tx-item";
                 
-                row.innerHTML = `
-                    <div class="flex items-center gap-4">
-                        <div class="w-8 h-8 rounded-full ${isIncome ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-600'} flex items-center justify-center">
-                            <i data-lucide="${isIncome ? 'arrow-down-left' : 'shopping-bag'}" class="w-4 h-4"></i>
+                item.innerHTML = `
+                    <div class="tx-info">
+                        <div class="tx-icon-dot ${isIncome ? 'dot-in' : 'dot-out'}">
+                            ${isIncome ? '↓' : '🛍️'}
                         </div>
                         <div>
-                            <p class="text-xs font-semibold text-slate-800">${t.text}</p>
-                            <p class="text-[10px] text-slate-400">Akun Utama</p>
+                            <div class="tx-name">${t.text}</div>
+                            <div class="tx-meta">Akaun Utama</div>
                         </div>
                     </div>
-                    <div class="flex items-center gap-4">
-                        <span class="text-xs font-bold ${isIncome ? 'text-emerald-600' : 'text-slate-900'}">
+                    <div style="display: flex; align-items: center;">
+                        <span class="tx-amount ${isIncome ? 'amt-in' : 'amt-out'}">
                             ${isIncome ? '+' : '-'} ${formatRupiah(t.amount)}
                         </span>
-                        <button onclick="deleteTransaction(${t.id})" class="text-slate-300 hover:text-rose-500 transition cursor-pointer">
-                            <i data-lucide="trash" class="w-3.5 h-3.5"></i>
-                        </button>
+                        <button onclick="deleteTransaction(${t.id})" class="btn-delete">✕</button>
                     </div>
                 `;
-                listEl.appendChild(row);
+                listEl.appendChild(item);
             });
-            lucide.createIcons();
         }
 
         form.addEventListener('submit', function(e) {
@@ -243,7 +256,7 @@
                 type: typeInput.value
             });
 
-            localStorage.setItem('monarch_tx', JSON.stringify(transactions));
+            localStorage.setItem('monarch_pure_tx', JSON.stringify(transactions));
             updateDashboard();
             textInput.value = '';
             amountInput.value = '';
@@ -251,13 +264,11 @@
 
         function deleteTransaction(id) {
             transactions = transactions.filter(t => t.id !== id);
-            localStorage.setItem('monarch_tx', JSON.stringify(transactions));
+            localStorage.setItem('monarch_pure_tx', JSON.stringify(transactions));
             updateDashboard();
         }
 
-        const initInc = transactions.filter(t => t.type === 'income').reduce((acc, t) => acc + t.amount, 0);
-        const initExp = transactions.filter(t => t.type === 'expense').reduce((acc, t) => acc + t.amount, 0);
-        initChart(initInc, initExp);
+        // Jalankan sistem
         updateDashboard();
     </script>
 </body>
