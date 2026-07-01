@@ -1,284 +1,203 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ms">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monarch Style Dashboard - Pink Edition</title>
+    <title>Monarch Sidebar</title>
     <style>
-        /* Gaya Asas Tersedia Tanpa Internet (Pure CSS) */
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        
-        /* BACKGROUND UTAMA: Ditukar kepada warna Soft Pink Pastel (#fff0f5) */
-        body { background-color: #fff2f6; color: #3c1e29; display: flex; min-height: 100vh; }
-        
-        /* SIDEBAR: Ditukar kepada warna Dark Rose/Berry Premium (#3d1322) */
-        aside { width: 260px; background-color: #3d1322; color: white; display: flex; flex-direction: column; justify-content: space-between; padding: 24px; flex-shrink: 0; }
-        .logo-area { display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: bold; margin-bottom: 30px; }
-        
-        /* KOTAK LOGO: Menggunakan warna Vivid Pink (#ec4899) */
-        .logo-box { width: 32px; height: 32px; background: #ec4899; border-radius: 8px; text-align: center; line-height: 32px; display: inline-block; font-weight: bold; }
-        nav a { display: flex; align-items: center; gap: 12px; padding: 12px; color: #f472b6; text-decoration: none; border-radius: 10px; margin-bottom: 8px; font-weight: 500; }
-        
-        /* MENU AKTIF: Highlight warna Pink Lembut */
-        nav a.active { background: rgba(236, 72, 153, 0.2); color: #fbcfe8; }
-        nav a:hover { background: #5c1d33; color: white; }
-        .profile { display: flex; align-items: center; gap: 12px; border-top: 1px solid #5c1d33; padding-top: 16px; }
-        .avatar { width: 40px; height: 40px; background: #ec4899; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-        /* Main Content */
-        main { flex: 1; padding: 40px; overflow-y: auto; }
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        header h1 { font-size: 26px; color: #3d1322; margin-bottom: 4px; }
-        header p { color: #855866; font-size: 14px; }
-        
-        /* BUTANG TAMBAH: Menggunakan warna Pink Monarch (#ec4899) */
-        .btn-add { background: #ec4899; color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.2s; }
-        .btn-add:hover { background: #db2777; }
-        .btn-manage { background: white; color: #3d1322; border: 1px solid #fbcfe8; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; margin-right: 10px; }
+        body {
+            display: flex;
+            background-color: #0d1224;
+            color: #ffffff;
+            min-height: 100vh;
+        }
 
-        /* Cards */
-        .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 30px; }
-        
-        /* KAD-KAD RINGKASAN: Background putih bersih dengan border pink halus */
-        .card { background: white; border: 1px solid #fbcfe8; padding: 24px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(244, 114, 182, 0.05); }
-        .card-top { display: flex; justify-content: space-between; color: #855866; font-size: 14px; margin-bottom: 12px; font-weight: 500; }
-        .badge { background: #f0fdf4; color: #16a34a; padding: 2px 8px; border-radius: 20px; font-size: 12px; font-weight: 600; }
-        .badge.blue { background: #fdf2f8; color: #ec4899; } /* Badge sasaran warna pink */
-        .badge.red { background: #fef2f2; color: #dc2626; }
-        .card h2 { font-size: 28px; color: #3d1322; font-weight: 700; }
+        /* --- Gaya Sidebar --- */
+        .sidebar {
+            width: 260px;
+            background-color: #0a0e1a;
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            border-right: 1px solid #1e293b;
+        }
 
-        /* Lower Grid */
-        .lower-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
-        .section-box { background: white; border: 1px solid #fbcfe8; padding: 24px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(244, 114, 182, 0.05); }
-        .section-box h3 { margin-bottom: 20px; font-size: 18px; color: #3d1322; }
-        
-        /* Progress Bars */
-        .budget-item { margin-bottom: 20px; }
-        .budget-info { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 6px; font-weight: 500; color: #5c1d33; }
-        .bar-bg { width: 100%; height: 10px; background: #fff0f5; border-radius: 10px; overflow: hidden; border: 1px solid #fbcfe8; }
-        .bar-fill { height: 100%; border-radius: 10px; transition: width 0.5s ease-in-out; }
+        /* Logo Monarch */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-left: 8px;
+        }
 
-        /* Transactions */
-        .t-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #fff0f5; }
-        .t-row:last-child { border-bottom: none; }
-        .t-left { display: flex; align-items: center; gap: 12px; }
-        .t-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
-        .t-name { font-size: 14px; font-weight: 600; color: #3d1322; }
-        .t-meta { font-size: 12px; color: #855866; }
-        .t-amount { font-size: 14px; font-weight: 700; }
+        .logo-box {
+            background-color: #4f46e5;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
 
-        /* Modal Pop-up */
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(61, 19, 34, 0.4); display: flex; align-items: center; justify-content: center; visibility: hidden; opacity: 0; transition: 0.2s; z-index: 100; backdrop-filter: blur(4px); }
-        .modal-overlay.open { visibility: visible; opacity: 1; }
-        .modal { background: white; padding: 30px; border-radius: 20px; width: 100%; max-width: 400px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); border: 1px solid #fbcfe8; }
-        .modal h3 { margin-bottom: 20px; font-size: 20px; color: #3d1322; }
-        .form-group { margin-bottom: 16px; }
-        .form-group label { display: block; font-size: 14px; margin-bottom: 6px; color: #5c1d33; font-weight: 500; }
-        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #fbcfe8; border-radius: 10px; font-size: 14px; outline: none; background: #fff8fa; }
-        .form-group input:focus, .form-group select:focus { border-color: #ec4899; background: white; }
-        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; }
-        .btn-cancel { background: #fff0f5; color: #855866; border: none; padding: 10px 16px; border-radius: 10px; cursor: pointer; font-weight: 600; }
-        .btn-save { background: #ec4899; color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; }
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* Menu Navigasi */
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            list-style: none;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 16px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        /* Emoji/Icon Style */
+        .nav-icon {
+            font-size: 18px;
+        }
+
+        /* Kesan Hover */
+        .nav-item:hover {
+            color: #e2e8f0;
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        /* Menu yang sedang Aktif (Macam Dashboard dalam gambar) */
+        .nav-item.active {
+            color: #818cf8;
+            background-color: #1e1b4b; /* Warna ungu gelap */
+        }
+
+        /* --- Kawasan Kandungan (Content Area) --- */
+        .main-content {
+            flex-1;
+            padding: 40px;
+            width: 100%;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
 
-    <aside>
-        <div>
-            <div class="logo-area">
-                <span class="logo-box">M</span> monarch
-            </div>
-            <nav>
-                <a href="#" class="active">🏠 Dashboard</a>
-                <a href="#">💰 Accounts</a>
-                <a href="#">📊 Cash Flow</a>
-                <a href="#">🎯 Goals</a>
-                <a href="#">⚙️ Settings</a>
-            </nav>
+    <div class="sidebar">
+        <div class="logo-container">
+            <div class="logo-box">M</div>
+            <span class="logo-text">monarch</span>
         </div>
-        <div class="profile">
-            <div class="avatar">SH</div>
-            <div>
-                <p style="font-size: 14px; font-weight: 600;">Shuhadah</p>
-                <p style="font-size: 12px; color: #f472b6;">Premium Plan</p>
-            </div>
+
+        <ul class="nav-menu">
+            <li>
+                <a href="#" class="nav-item active" onclick="tukarPage('dashboard', this)">
+                    <span class="nav-icon">🏠</span> 
+                    <span class="nav-text">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item" onclick="tukarPage('accounts', this)">
+                    <span class="nav-icon">💰</span> 
+                    <span class="nav-text">Accounts</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item" onclick="tukarPage('cashflow', this)">
+                    <span class="nav-icon">📊</span> 
+                    <span class="nav-text">Cash Flow</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item" onclick="tukarPage('goals', this)">
+                    <span class="nav-icon">🎯</span> 
+                    <span class="nav-text">Goals</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item" onclick="tukarPage('settings', this)">
+                    <span class="nav-icon">⚙️</span> 
+                    <span class="nav-text">Settings</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div id="dashboard" class="page active">
+            <h2>Selamat Datang ke Dashboard</h2>
+            <p>Ini adalah halaman utama anda.</p>
         </div>
-    </aside>
 
-    <main>
-        <header>
-            <div>
-                <h1>Welcome back, Shuhadah</h1>
-                <p>Here is your pink-themed financial overview today.</p>
-            </div>
-            <div>
-                <button class="btn-manage">Manage Accounts</button>
-                <button class="btn-add" id="openBtn">+ Add Transaction</button>
-            </div>
-        </header>
+        <div id="accounts" class="page">
+            <h2>Halaman Accounts</h2>
+            <p>Uruskan akaun bank dan kewangan anda di sini.</p>
+        </div>
 
-        <section class="cards-grid">
-            <div class="card">
-                <div class="card-top"><span>Net Worth</span><span class="badge">+4.2%</span></div>
-                <h2 id="netWorthDisplay">RM 45,230.00</h2>
-            </div>
-            <div class="card">
-                <div class="card-top"><span>Savings This Month</span><span class="badge blue">Target 80%</span></div>
-                <h2>RM 2,400.00</h2>
-            </div>
-            <div class="card">
-                <div class="card-top"><span>Expenses</span><span class="badge red">Near Budget</span></div>
-                <h2 id="expensesDisplay">RM 1,850.20</h2>
-            </div>
-        </section>
+        <div id="cashflow" class="page">
+            <h2>Halaman Cash Flow</h2>
+            <p>Lihat aliran masuk dan keluar wang anda.</p>
+        </div>
 
-        <section class="lower-grid">
-            <div class="section-box">
-                <h3>Budget Performance</h3>
-                
-                <div class="budget-item">
-                    <div class="budget-info"><span>Groceries & Dining</span><span>RM <span id="val-groceries">450</span> / RM 600</span></div>
-                    <div class="bar-bg"><div id="bar-groceries" class="bar-fill" style="width: 75%; background: #ec4899;"></div></div>
-                </div>
+        <div id="goals" class="page">
+            <h2>Halaman Goals</h2>
+            <p>Tetapkan dan jejak sasaran simpanan anda.</p>
+        </div>
 
-                <div class="budget-item">
-                    <div class="budget-info"><span>Transport & Fuel</span><span>RM <span id="val-transport">120</span> / RM 300</span></div>
-                    <div class="bar-bg"><div id="bar-transport" class="bar-fill" style="width: 40%; background: #22c55e;"></div></div>
-                </div>
-
-                <div class="budget-item">
-                    <div class="budget-info"><span>Entertainment & Subscriptions</span><span>RM <span id="val-entertainment">190</span> / RM 200</span></div>
-                    <div class="bar-bg"><div id="bar-entertainment" class="bar-fill" style="width: 95%; background: #ef4444;"></div></div>
-                </div>
-            </div>
-
-            <div class="section-box">
-                <h3>Recent Transactions</h3>
-                <div id="transactionsContainer">
-                    </div>
-            </div>
-        </section>
-    </main>
-
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal">
-            <h3>Add New Transaction</h3>
-            <div class="form-group">
-                <label>Merchant / Name</label>
-                <input type="text" id="inputName" placeholder="e.g. Starbucks, Bonus">
-            </div>
-            <div class="form-group">
-                <label>Category</label>
-                <select id="inputCategory">
-                    <option value="Groceries">Groceries & Dining</option>
-                    <option value="Transport">Transport & Fuel</option>
-                    <option value="Entertainment">Entertainment & Subscriptions</option>
-                    <option value="Income">Income / Salary</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Amount (RM)</label>
-                <input type="number" id="inputAmount" placeholder="0.00" step="0.01">
-            </div>
-            <div class="modal-actions">
-                <button class="btn-cancel" id="closeBtn">Cancel</button>
-                <button class="btn-save" id="saveBtn">Save</button>
-            </div>
+        <div id="settings" class="page">
+            <h2>Halaman Settings</h2>
+            <p>Tukar tetapan akaun dan aplikasi di sini.</p>
         </div>
     </div>
 
     <script>
-        let data = {
-            netWorth: 45230.00,
-            expenses: 1850.20,
-            budgets: {
-                Groceries: { spent: 450, limit: 600 },
-                Transport: { spent: 120, limit: 300 },
-                Entertainment: { spent: 190, limit: 200 }
-            },
-            transactions: [
-                { name: "Lotus's Supermarket", category: "Groceries", date: "Today", amount: -142.00, emoji: "🛒", bg: "#ffedd5", color: "#ea580c" },
-                { name: "Shell Station", category: "Transport", date: "Yesterday", amount: -50.00, emoji: "🚗", bg: "#dbeafe", color: "#2563eb" },
-                { name: "Monthly Salary", category: "Income", date: "28 Jun", amount: 4500.00, emoji: "💼", bg: "#dcfce7", color: "#16a34a" }
-            ]
-        };
+        function tukarPage(pageId, element) {
+            // 1. Buang kelas 'active' daripada semua kandungan halaman
+            const semuaPage = document.querySelectorAll('.page');
+            semuaPage.forEach(page => page.classList.remove('active'));
 
-        function formatCurrency(val) {
-            return "RM " + val.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            // 2. Buang kelas 'active' daripada semua butang menu
+            const semuaMenu = document.querySelectorAll('.nav-item');
+            semuaMenu.forEach(menu => menu.classList.remove('active'));
+
+            // 3. Paparkan halaman yang diklik
+            document.getElementById(pageId).classList.add('active');
+
+            // 4. Setkan butang menu yang diklik sebagai aktif (highlight warna ungu)
+            element.classList.add('active');
         }
-
-        function refreshScreen() {
-            document.getElementById('netWorthDisplay').innerText = formatCurrency(data.netWorth);
-            document.getElementById('expensesDisplay').innerText = formatCurrency(data.expenses);
-
-            for (let cat in data.budgets) {
-                let item = data.budgets[cat];
-                document.getElementById('val-' + cat.toLowerCase()).innerText = item.spent.toFixed(0);
-                let percentage = Math.min((item.spent / item.limit) * 100, 100);
-                document.getElementById('bar-' + cat.toLowerCase()).style.width = percentage + '%';
-            }
-
-            let container = document.getElementById('transactionsContainer');
-            container.innerHTML = '';
-
-            data.transactions.forEach(t => {
-                let sign = t.amount > 0 ? "+ " : "- ";
-                let finalAmt = sign + formatCurrency(Math.abs(t.amount));
-                let colorClass = t.amount > 0 ? "color: #16a34a;" : "color: #3d1322;";
-
-                container.innerHTML += `
-                    <div class="t-row">
-                        <div class="t-left">
-                            <div class="t-icon" style="background: ${t.bg}; color: ${t.color};">${t.emoji}</div>
-                            <div>
-                                <div class="t-name">${t.name}</div>
-                                <div class="t-meta">${t.date} • ${t.category}</div>
-                            </div>
-                        </div>
-                        <div class="t-amount" style="${colorClass}">${finalAmt}</div>
-                    </div>
-                `;
-            });
-        }
-
-        const overlay = document.getElementById('modalOverlay');
-        document.getElementById('openBtn').addEventListener('click', () => overlay.classList.add('open'));
-        document.getElementById('closeBtn').addEventListener('click', () => overlay.classList.remove('open'));
-
-        document.getElementById('saveBtn').addEventListener('click', () => {
-            let name = document.getElementById('inputName').value.trim();
-            let category = document.getElementById('inputCategory').value;
-            let amount = parseFloat(document.getElementById('inputAmount').value);
-
-            if (!name || isNaN(amount) || amount <= 0) {
-                alert("Please fill in valid name and amount.");
-                return;
-            }
-
-            let config = { emoji: "💸", bg: "#fff0f5", color: "#ec4899" };
-            if(category === "Groceries")     config = { emoji: "🛒", bg: "#ffedd5", color: "#ea580c" };
-            if(category === "Transport")     config = { emoji: "🚗", bg: "#dbeafe", color: "#2563eb" };
-            if(category === "Entertainment") config = { emoji: "🍿", bg: "#fee2e2", color: "#dc2626" };
-            if(category === "Income")        config = { emoji: "💼", bg: "#dcfce7", color: "#16a34a" };
-
-            if (category === "Income") {
-                data.netWorth += amount;
-                data.transactions.unshift({ name, category, date: "Today", amount: amount, ...config });
-            } else {
-                data.netWorth -= amount;
-                data.expenses += amount;
-                if(data.budgets[category]) data.budgets[category].spent += amount;
-                data.transactions.unshift({ name, category, date: "Today", amount: -amount, ...config });
-            }
-
-            document.getElementById('inputName').value = '';
-            document.getElementById('inputAmount').value = '';
-            overlay.classList.remove('open');
-            
-            refreshScreen();
-        });
-
-        window.onload = refreshScreen;
     </script>
+
 </body>
 </html>
