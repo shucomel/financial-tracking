@@ -231,3 +231,57 @@
                                 <p class="text-sm font-semibold text-slate-800">${t.name}</p>
                                 <p class="text-xs text-slate-400">${t.date} • ${t.category}</p>
                             </div>
+                        </div>
+                        <span class="text-sm font-bold ${amtColor}">${amtText}</span>
+                    </div>
+                `;
+            });
+        }
+
+        // Fungsi Buka & Tutup Pop-Up Modal
+        function openModal() { document.getElementById('transactionModal').classList.remove('hidden'); }
+        document.getElementById('transactionModal').addEventListener('click', function(e) {
+            if(e.target === this) closeModal();
+        });
+        function closeModal() { document.getElementById('transactionModal').classList.add('hidden'); }
+
+        // Fungsi Simpan Transaksi Baru
+        function submitTransaction() {
+            let name = document.getElementById('inputName').value.trim();
+            let category = document.getElementById('inputCategory').value;
+            let amount = parseFloat(document.getElementById('inputAmount').value);
+
+            if (!name || isNaN(amount) || amount <= 0) {
+                alert("Please enter a valid name and amount!");
+                return;
+            }
+
+            let emoji = "💸";
+            if (category === "Groceries") emoji = "🛒";
+            if (category === "Transport") emoji = "🚗";
+            if (category === "Entertainment") emoji = "🍿";
+            if (category === "Income") emoji = "💼";
+
+            // Jika kategori adalah Income, duit bertambah, sebaliknya perbelanjaan bertambah
+            if (category === "Income") {
+                financialData.netWorth += amount;
+                financialData.transactions.unshift({ name, category, date: "Today", amount: amount, emoji });
+            } else {
+                financialData.netWorth -= amount;
+                financialData.expenses += amount;
+                financialData.budgets[category].spent += amount;
+                financialData.transactions.unshift({ name, category, date: "Today", amount: -amount, emoji });
+            }
+
+            // Reset input form, tutup modal dan refresh UI
+            document.getElementById('inputName').value = '';
+            document.getElementById('inputAmount').value = '';
+            closeModal();
+            updateUI();
+        }
+
+        // Jalankan fungsi UI kali pertama ketika web dibuka
+        updateUI();
+    </script>
+</body>
+</html>
