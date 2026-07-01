@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monarch - Accounts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0d1224;
+            color: #ffffff;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .header p {
+            color: #94a3b8;
+            margin-top: 5px;
+        }
+
+        /* Ringkasan Kad (Summary Cards) */
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: #0a0e1a;
+            border: 1px solid #1e293b;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .card-title {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 10px;
+        }
+
+        .card-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .card-value.income { color: #10b981; }
+        .card-value.expense { color: #f43f5e; }
+
+        /* Borang & Jadual Grid Layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media (min-width: 768px) {
+            .main-grid {
+                grid-template-columns: 350px 1fr;
+            }
+        }
+
+        /* Gaya Borang (Form Style) */
+        .form-container {
+            background-color: #0a0e1a;
+            border: 1px solid #1e293b;
+            padding: 24px;
+            border-radius: 12px;
+            height: fit-content;
+        }
+
+        .form-container h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #818cf8;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            background-color: #0d1224;
+            border: 1px solid #1e293b;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: #4f46e5;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background-color: #4338ca;
+        }
+
+        /* Gaya Jadual Transaksi (Transaction Table) */
+        .table-container {
+            background-color: #0a0e1a;
+            border: 1px solid #1e293b;
+            padding: 24px;
+            border-radius: 12px;
+            overflow-x: auto;
+        }
+
+        .table-container h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            padding: 12px 16px;
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 500;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        td {
+            padding: 14px 16px;
+            font-size: 14px;
+            border-bottom: 1px solid #0d1224;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge.income {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .badge.expense {
+            background-color: rgba(244, 63, 94, 0.1);
+            color: #f43f5e;
+        }
+
+        .text-income { color: #10b981; font-weight: 600; }
+        .text-expense { color: #f43f5e; font-weight: 600; }
+
+        .btn-delete {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-delete:hover {
+            color: #f43f5e;
+        }
+        
+        .empty-state {
+            text-align: center;
+            color: #94a3b8;
+            padding: 30px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>Akaun & Transaksi</h1>
+            <p>Uruskan rekod pendapatan dan perbelanjaan anda di sini.</p>
+        </div>
+
+        <div class="summary-cards">
+            <div class="card">
+                <div class="card-title">Jumlah Pendapatan</div>
+                <div class="card-value income" id="totalIncome">RM 0.00</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Jumlah Perbelanjaan</div>
+                <div class="card-value expense" id="totalExpense">RM 0.00</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Baki Bersih</div>
+                <div class="card-value" id="netBalance">RM 0.00</div>
+            </div>
+        </div>
+
+        <div class="main-grid">
+            <div class="form-container">
+                <h3>Tambah Transaksi Baru</h3>
+                <form id="transactionForm">
+                    <div class="form-group">
+                        <label for="description">Deskripsi / Nama</label>
+                        <input type="text" id="description" class="form-control" placeholder="Contoh: Gaji, Makan Malam" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="type">Jenis Transaksi</label>
+                        <select id="type" class="form-control" required>
+                            <option value="income">Pendapatan (+)</option>
+                            <option value="expense">Perbelanjaan (-)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Kategori</label>
+                        <select id="category" class="form-control" required>
+                            <option value="Gaji">Gaji / Elaun</option>
+                            <option value="Makanan">Makanan & Minuman</option>
+                            <option value="Pengangkutan">Pengangkutan</option>
+                            <option
