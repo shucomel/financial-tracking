@@ -3,287 +3,282 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monarch Style Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Monarch Style Dashboard - Pink Edition</title>
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        /* Gaya Asas Tersedia Tanpa Internet (Pure CSS) */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        /* BACKGROUND UTAMA: Ditukar kepada warna Soft Pink Pastel (#fff0f5) */
+        body { background-color: #fff2f6; color: #3c1e29; display: flex; min-height: 100vh; }
+        
+        /* SIDEBAR: Ditukar kepada warna Dark Rose/Berry Premium (#3d1322) */
+        aside { width: 260px; background-color: #3d1322; color: white; display: flex; flex-direction: column; justify-content: space-between; padding: 24px; flex-shrink: 0; }
+        .logo-area { display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: bold; margin-bottom: 30px; }
+        
+        /* KOTAK LOGO: Menggunakan warna Vivid Pink (#ec4899) */
+        .logo-box { width: 32px; height: 32px; background: #ec4899; border-radius: 8px; text-align: center; line-height: 32px; display: inline-block; font-weight: bold; }
+        nav a { display: flex; align-items: center; gap: 12px; padding: 12px; color: #f472b6; text-decoration: none; border-radius: 10px; margin-bottom: 8px; font-weight: 500; }
+        
+        /* MENU AKTIF: Highlight warna Pink Lembut */
+        nav a.active { background: rgba(236, 72, 153, 0.2); color: #fbcfe8; }
+        nav a:hover { background: #5c1d33; color: white; }
+        .profile { display: flex; align-items: center; gap: 12px; border-top: 1px solid #5c1d33; padding-top: 16px; }
+        .avatar { width: 40px; height: 40px; background: #ec4899; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+
+        /* Main Content */
+        main { flex: 1; padding: 40px; overflow-y: auto; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        header h1 { font-size: 26px; color: #3d1322; margin-bottom: 4px; }
+        header p { color: #855866; font-size: 14px; }
+        
+        /* BUTANG TAMBAH: Menggunakan warna Pink Monarch (#ec4899) */
+        .btn-add { background: #ec4899; color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .btn-add:hover { background: #db2777; }
+        .btn-manage { background: white; color: #3d1322; border: 1px solid #fbcfe8; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; margin-right: 10px; }
+
+        /* Cards */
+        .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 30px; }
+        
+        /* KAD-KAD RINGKASAN: Background putih bersih dengan border pink halus */
+        .card { background: white; border: 1px solid #fbcfe8; padding: 24px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(244, 114, 182, 0.05); }
+        .card-top { display: flex; justify-content: space-between; color: #855866; font-size: 14px; margin-bottom: 12px; font-weight: 500; }
+        .badge { background: #f0fdf4; color: #16a34a; padding: 2px 8px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .badge.blue { background: #fdf2f8; color: #ec4899; } /* Badge sasaran warna pink */
+        .badge.red { background: #fef2f2; color: #dc2626; }
+        .card h2 { font-size: 28px; color: #3d1322; font-weight: 700; }
+
+        /* Lower Grid */
+        .lower-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+        .section-box { background: white; border: 1px solid #fbcfe8; padding: 24px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(244, 114, 182, 0.05); }
+        .section-box h3 { margin-bottom: 20px; font-size: 18px; color: #3d1322; }
+        
+        /* Progress Bars */
+        .budget-item { margin-bottom: 20px; }
+        .budget-info { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 6px; font-weight: 500; color: #5c1d33; }
+        .bar-bg { width: 100%; height: 10px; background: #fff0f5; border-radius: 10px; overflow: hidden; border: 1px solid #fbcfe8; }
+        .bar-fill { height: 100%; border-radius: 10px; transition: width 0.5s ease-in-out; }
+
+        /* Transactions */
+        .t-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #fff0f5; }
+        .t-row:last-child { border-bottom: none; }
+        .t-left { display: flex; align-items: center; gap: 12px; }
+        .t-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .t-name { font-size: 14px; font-weight: 600; color: #3d1322; }
+        .t-meta { font-size: 12px; color: #855866; }
+        .t-amount { font-size: 14px; font-weight: 700; }
+
+        /* Modal Pop-up */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(61, 19, 34, 0.4); display: flex; align-items: center; justify-content: center; visibility: hidden; opacity: 0; transition: 0.2s; z-index: 100; backdrop-filter: blur(4px); }
+        .modal-overlay.open { visibility: visible; opacity: 1; }
+        .modal { background: white; padding: 30px; border-radius: 20px; width: 100%; max-width: 400px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); border: 1px solid #fbcfe8; }
+        .modal h3 { margin-bottom: 20px; font-size: 20px; color: #3d1322; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 14px; margin-bottom: 6px; color: #5c1d33; font-weight: 500; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #fbcfe8; border-radius: 10px; font-size: 14px; outline: none; background: #fff8fa; }
+        .form-group input:focus, .form-group select:focus { border-color: #ec4899; background: white; }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; }
+        .btn-cancel { background: #fff0f5; color: #855866; border: none; padding: 10px 16px; border-radius: 10px; cursor: pointer; font-weight: 600; }
+        .btn-save { background: #ec4899; color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; }
     </style>
 </head>
-<body class="bg-[#f8fafc] text-[#0f172a] flex min-h-screen">
+<body>
 
-    <aside class="w-64 bg-[#0b1329] text-white flex flex-col justify-between p-6 hidden md:flex">
+    <aside>
         <div>
-            <div class="flex items-center gap-2 mb-8">
-                <div class="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center font-bold text-lg text-white">M</div>
-                <span class="text-xl font-bold tracking-tight">monarch</span>
+            <div class="logo-area">
+                <span class="logo-box">M</span> monarch
             </div>
-            
-            <nav class="space-y-2">
-                <a href="#" class="flex items-center gap-3 px-4 py-2.5 bg-indigo-600/20 text-indigo-400 rounded-xl font-medium transition">
-                    <span>🏠</span> Dashboard
-                </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl font-medium transition">
-                    <span>💰</span> Accounts
-                </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl font-medium transition">
-                    <span>📊</span> Cash Flow
-                </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl font-medium transition">
-                    <span>🎯</span> Goals
-                </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl font-medium transition">
-                    <span>⚙️</span> Settings
-                </a>
+            <nav>
+                <a href="#" class="active">🏠 Dashboard</a>
+                <a href="#">💰 Accounts</a>
+                <a href="#">📊 Cash Flow</a>
+                <a href="#">🎯 Goals</a>
+                <a href="#">⚙️ Settings</a>
             </nav>
         </div>
-
-        <div class="flex items-center gap-3 border-t border-slate-800 pt-4">
-            <div class="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center font-semibold text-sm">SH</div>
+        <div class="profile">
+            <div class="avatar">SH</div>
             <div>
-                <p class="text-sm font-medium">Shuhadah</p>
-                <p class="text-xs text-slate-400">Premium Plan</p>
+                <p style="font-size: 14px; font-weight: 600;">Shuhadah</p>
+                <p style="font-size: 12px; color: #f472b6;">Premium Plan</p>
             </div>
         </div>
     </aside>
 
-    <main class="flex-1 p-6 md:p-10 overflow-y-auto">
-        
-        <header class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+    <main>
+        <header>
             <div>
-                <h1 class="text-2xl font-bold text-slate-900">Welcome back, Shuhadah</h1>
-                <p class="text-sm text-slate-500">Here is your financial overview today.</p>
+                <h1>Welcome back, Shuhadah</h1>
+                <p>Here is your pink-themed financial overview today.</p>
             </div>
-            <div class="flex items-center gap-3">
-                <button class="bg-white border border-slate-200 px-4 py-2 rounded-xl text-sm font-medium shadow-sm hover:bg-slate-50 transition">
-                    Manage Accounts
-                </button>
-                <button onclick="openModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-xl text-sm font-medium shadow-sm hover:bg-indigo-700 transition">
-                    + Add Transaction
-                </button>
+            <div>
+                <button class="btn-manage">Manage Accounts</button>
+                <button class="btn-add" id="openBtn">+ Add Transaction</button>
             </div>
         </header>
 
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-sm font-medium text-slate-500">Net Worth</span>
-                    <span class="text-green-500 text-xs font-semibold bg-green-50 px-2 py-0.5 rounded-full">+4.2%</span>
-                </div>
-                <h2 id="netWorthDisplay" class="text-3xl font-bold text-slate-900">RM 45,230.00</h2>
+        <section class="cards-grid">
+            <div class="card">
+                <div class="card-top"><span>Net Worth</span><span class="badge">+4.2%</span></div>
+                <h2 id="netWorthDisplay">RM 45,230.00</h2>
             </div>
-            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-sm font-medium text-slate-500">Savings This Month</span>
-                    <span class="text-indigo-500 text-xs font-semibold bg-indigo-50 px-2 py-0.5 rounded-full">Target 80%</span>
-                </div>
-                <h2 class="text-3xl font-bold text-slate-900">RM 2,400.00</h2>
+            <div class="card">
+                <div class="card-top"><span>Savings This Month</span><span class="badge blue">Target 80%</span></div>
+                <h2>RM 2,400.00</h2>
             </div>
-            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-sm font-medium text-slate-500">Expenses</span>
-                    <span class="text-red-500 text-xs font-semibold bg-red-50 px-2 py-0.5 rounded-full">Near Budget</span>
-                </div>
-                <h2 id="expensesDisplay" class="text-3xl font-bold text-slate-900">RM 1,850.20</h2>
+            <div class="card">
+                <div class="card-top"><span>Expenses</span><span class="badge red">Near Budget</span></div>
+                <h2 id="expensesDisplay">RM 1,850.20</h2>
             </div>
         </section>
 
-        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
-            <div class="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-                <h3 class="text-lg font-bold text-slate-900 mb-4">Budget Performance</h3>
+        <section class="lower-grid">
+            <div class="section-box">
+                <h3>Budget Performance</h3>
                 
-                <div class="space-y-4">
-                    <div>
-                        <div class="flex justify-between text-sm mb-1">
-                            <span class="text-slate-600 font-medium">Groceries & Dining</span>
-                            <span class="text-slate-900 font-semibold">RM <span id="val-groceries">450</span> / RM 600</span>
-                        </div>
-                        <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
-                            <div id="bar-groceries" class="bg-indigo-500 h-full rounded-full transition-all duration-500" style="width: 75%"></div>
-                        </div>
-                    </div>
+                <div class="budget-item">
+                    <div class="budget-info"><span>Groceries & Dining</span><span>RM <span id="val-groceries">450</span> / RM 600</span></div>
+                    <div class="bar-bg"><div id="bar-groceries" class="bar-fill" style="width: 75%; background: #ec4899;"></div></div>
+                </div>
 
-                    <div>
-                        <div class="flex justify-between text-sm mb-1">
-                            <span class="text-slate-600 font-medium">Transport & Fuel</span>
-                            <span class="text-slate-900 font-semibold">RM <span id="val-transport">120</span> / RM 300</span>
-                        </div>
-                        <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
-                            <div id="bar-transport" class="bg-green-500 h-full rounded-full transition-all duration-500" style="width: 40%"></div>
-                        </div>
-                    </div>
+                <div class="budget-item">
+                    <div class="budget-info"><span>Transport & Fuel</span><span>RM <span id="val-transport">120</span> / RM 300</span></div>
+                    <div class="bar-bg"><div id="bar-transport" class="bar-fill" style="width: 40%; background: #22c55e;"></div></div>
+                </div>
 
-                    <div>
-                        <div class="flex justify-between text-sm mb-1">
-                            <span class="text-slate-600 font-medium">Entertainment & Subscriptions</span>
-                            <span class="text-slate-900 font-semibold">RM <span id="val-entertainment">190</span> / RM 200</span>
-                        </div>
-                        <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
-                            <div id="bar-entertainment" class="bg-red-500 h-full rounded-full transition-all duration-500" style="width: 95%"></div>
-                        </div>
-                    </div>
+                <div class="budget-item">
+                    <div class="budget-info"><span>Entertainment & Subscriptions</span><span>RM <span id="val-entertainment">190</span> / RM 200</span></div>
+                    <div class="bar-bg"><div id="bar-entertainment" class="bar-fill" style="width: 95%; background: #ef4444;"></div></div>
                 </div>
             </div>
 
-            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-                <h3 class="text-lg font-bold text-slate-900 mb-4">Recent Transactions</h3>
-                <div id="transactionsContainer" class="space-y-4">
+            <div class="section-box">
+                <h3>Recent Transactions</h3>
+                <div id="transactionsContainer">
                     </div>
             </div>
-
         </section>
     </main>
 
-    <div id="transactionModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center hidden z-50">
-        <div class="bg-white p-6 rounded-2xl shadow-xl w-full max-w-md border border-slate-100 m-4">
-            <h3 class="text-xl font-bold text-slate-900 mb-4">Add New Transaction</h3>
-            
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-slate-600 mb-1">Merchant / Name</label>
-                    <input id="inputName" type="text" placeholder="e.g., Starbucks, Bonus" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm focus:outline-indigo-500">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-600 mb-1">Category</label>
-                    <select id="inputCategory" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm focus:outline-indigo-500">
-                        <option value="Groceries">Groceries & Dining</option>
-                        <option value="Transport">Transport & Fuel</option>
-                        <option value="Entertainment">Entertainment & Subscriptions</option>
-                        <option value="Income">Income / Salary</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-600 mb-1">Amount (RM)</label>
-                    <input id="inputAmount" type="number" step="0.01" placeholder="0.00" class="w-full border border-slate-200 rounded-xl p-2.5 text-sm focus:outline-indigo-500">
-                </div>
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <h3>Add New Transaction</h3>
+            <div class="form-group">
+                <label>Merchant / Name</label>
+                <input type="text" id="inputName" placeholder="e.g. Starbucks, Bonus">
             </div>
-
-            <div class="flex justify-end gap-3 mt-6">
-                <button onclick="closeModal()" class="px-4 py-2 border border-slate-200 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50">Cancel</button>
-                <button onclick="submitTransaction()" class="px-4 py-2 bg-indigo-600 text-white rounded-xl text-sm font-medium hover:bg-indigo-700">Save</button>
+            <div class="form-group">
+                <label>Category</label>
+                <select id="inputCategory">
+                    <option value="Groceries">Groceries & Dining</option>
+                    <option value="Transport">Transport & Fuel</option>
+                    <option value="Entertainment">Entertainment & Subscriptions</option>
+                    <option value="Income">Income / Salary</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Amount (RM)</label>
+                <input type="number" id="inputAmount" placeholder="0.00" step="0.01">
+            </div>
+            <div class="modal-actions">
+                <button class="btn-cancel" id="closeBtn">Cancel</button>
+                <button class="btn-save" id="saveBtn">Save</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Data permulaan (State)
-        let financialData = {
+        let data = {
             netWorth: 45230.00,
-            savings: 2400.00,
             expenses: 1850.20,
             budgets: {
-                Groceries: { spent: 450, limit: 600, emoji: '🛒' },
-                Transport: { spent: 120, limit: 300, emoji: '🚗' },
-                Entertainment: { spent: 190, limit: 200, emoji: '🍿' }
+                Groceries: { spent: 450, limit: 600 },
+                Transport: { spent: 120, limit: 300 },
+                Entertainment: { spent: 190, limit: 200 }
             },
             transactions: [
-                { name: "Lotus's Supermarket", category: "Groceries", date: "Today", amount: -142.00, emoji: "🛒" },
-                { name: "Shell Station", category: "Transport", date: "Yesterday", amount: -50.00, emoji: "🚗" },
-                { name: "Monthly Salary", category: "Income", date: "28 Jun", amount: 4500.00, emoji: "💼" }
+                { name: "Lotus's Supermarket", category: "Groceries", date: "Today", amount: -142.00, emoji: "🛒", bg: "#ffedd5", color: "#ea580c" },
+                { name: "Shell Station", category: "Transport", date: "Yesterday", amount: -50.00, emoji: "🚗", bg: "#dbeafe", color: "#2563eb" },
+                { name: "Monthly Salary", category: "Income", date: "28 Jun", amount: 4500.00, emoji: "💼", bg: "#dcfce7", color: "#16a34a" }
             ]
         };
 
-        // Format nombor jadi format duit RM
-        function formatRM(val) {
-            return "RM " + val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        function formatCurrency(val) {
+            return "RM " + val.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
         }
 
-        // Fungsi kemaskini semua data di skrin
-        function updateUI() {
-            document.getElementById('netWorthDisplay').innerText = formatRM(financialData.netWorth);
-            document.getElementById('expensesDisplay').innerText = formatRM(financialData.expenses);
+        function refreshScreen() {
+            document.getElementById('netWorthDisplay').innerText = formatCurrency(data.netWorth);
+            document.getElementById('expensesDisplay').innerText = formatCurrency(data.expenses);
 
-            // Kemaskini Progress Bar Bajet
-            for (let cat in financialData.budgets) {
-                let b = financialData.budgets[cat];
-                let valElement = document.getElementById(`val-${cat.toLowerCase()}`);
-                if(valElement) valElement.innerText = b.spent.toFixed(0);
-                
-                let pct = Math.min((b.spent / b.limit) * 100, 100);
-                let barElement = document.getElementById(`bar-${cat.toLowerCase()}`);
-                if(barElement) barElement.style.width = pct + '%';
+            for (let cat in data.budgets) {
+                let item = data.budgets[cat];
+                document.getElementById('val-' + cat.toLowerCase()).innerText = item.spent.toFixed(0);
+                let percentage = Math.min((item.spent / item.limit) * 100, 100);
+                document.getElementById('bar-' + cat.toLowerCase()).style.width = percentage + '%';
             }
 
-            // Kemaskini Senarai Transaksi Terbaru
             let container = document.getElementById('transactionsContainer');
             container.innerHTML = '';
-            
-            financialData.transactions.forEach(t => {
-                let isIncome = t.amount > 0;
-                let amtText = (isIncome ? "+ " : "- ") + formatRM(Math.abs(t.amount));
-                let amtColor = isIncome ? "text-green-600" : "text-slate-900";
-                
-                let bgCircle = 'bg-slate-100 text-slate-600';
-                if(t.category === 'Groceries') bgCircle = 'bg-orange-100 text-orange-600';
-                if(t.category === 'Transport') bgCircle = 'bg-blue-100 text-blue-600';
-                if(t.category === 'Income') bgCircle = 'bg-green-100 text-green-600';
-                if(t.category === 'Entertainment') bgCircle = 'bg-red-100 text-red-600';
+
+            data.transactions.forEach(t => {
+                let sign = t.amount > 0 ? "+ " : "- ";
+                let finalAmt = sign + formatCurrency(Math.abs(t.amount));
+                let colorClass = t.amount > 0 ? "color: #16a34a;" : "color: #3d1322;";
 
                 container.innerHTML += `
-                    <div class="flex items-center justify-between py-2 border-b border-slate-50 last:border-0">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 ${bgCircle} rounded-xl flex items-center justify-center text-sm">${t.emoji}</div>
+                    <div class="t-row">
+                        <div class="t-left">
+                            <div class="t-icon" style="background: ${t.bg}; color: ${t.color};">${t.emoji}</div>
                             <div>
-                                <p class="text-sm font-semibold text-slate-800">${t.name}</p>
-                                <p class="text-xs text-slate-400">${t.date} • ${t.category}</p>
+                                <div class="t-name">${t.name}</div>
+                                <div class="t-meta">${t.date} • ${t.category}</div>
                             </div>
                         </div>
-                        <span class="text-sm font-bold ${amtColor}">${amtText}</span>
+                        <div class="t-amount" style="${colorClass}">${finalAmt}</div>
                     </div>
                 `;
             });
         }
 
-        // Fungsi Buka & Tutup Pop-Up Modal
-        function openModal() { 
-            document.getElementById('transactionModal').classList.remove('hidden'); 
-        }
-        function closeModal() { 
-            document.getElementById('transactionModal').classList.add('hidden'); 
-        }
+        const overlay = document.getElementById('modalOverlay');
+        document.getElementById('openBtn').addEventListener('click', () => overlay.classList.add('open'));
+        document.getElementById('closeBtn').addEventListener('click', () => overlay.classList.remove('open'));
 
-        // Fungsi Simpan apabila butang Save ditekan
-        function submitTransaction() {
+        document.getElementById('saveBtn').addEventListener('click', () => {
             let name = document.getElementById('inputName').value.trim();
             let category = document.getElementById('inputCategory').value;
             let amount = parseFloat(document.getElementById('inputAmount').value);
 
             if (!name || isNaN(amount) || amount <= 0) {
-                alert("Sila masukkan nama kedai/merchant dan jumlah amaun yang betul!");
+                alert("Please fill in valid name and amount.");
                 return;
             }
 
-            let emoji = "💸";
-            if (category === "Groceries") emoji = "🛒";
-            if (category === "Transport") emoji = "🚗";
-            if (category === "Entertainment") emoji = "🍿";
-            if (category === "Income") emoji = "💼";
+            let config = { emoji: "💸", bg: "#fff0f5", color: "#ec4899" };
+            if(category === "Groceries")     config = { emoji: "🛒", bg: "#ffedd5", color: "#ea580c" };
+            if(category === "Transport")     config = { emoji: "🚗", bg: "#dbeafe", color: "#2563eb" };
+            if(category === "Entertainment") config = { emoji: "🍿", bg: "#fee2e2", color: "#dc2626" };
+            if(category === "Income")        config = { emoji: "💼", bg: "#dcfce7", color: "#16a34a" };
 
-            // Mengira logik kemasukan data kewangan
             if (category === "Income") {
-                financialData.netWorth += amount;
-                financialData.transactions.unshift({ name, category, date: "Today", amount: amount, emoji });
+                data.netWorth += amount;
+                data.transactions.unshift({ name, category, date: "Today", amount: amount, ...config });
             } else {
-                financialData.netWorth -= amount;
-                financialData.expenses += amount;
-                if(financialData.budgets[category]) {
-                    financialData.budgets[category].spent += amount;
-                }
-                financialData.transactions.unshift({ name, category, date: "Today", amount: -amount, emoji });
+                data.netWorth -= amount;
+                data.expenses += amount;
+                if(data.budgets[category]) data.budgets[category].spent += amount;
+                data.transactions.unshift({ name, category, date: "Today", amount: -amount, ...config });
             }
 
-            // Set semula borang kosong, tutup pop-up, dan kemaskini UI skrin
             document.getElementById('inputName').value = '';
             document.getElementById('inputAmount').value = '';
-            closeModal();
-            updateUI();
-        }
+            overlay.classList.remove('open');
+            
+            refreshScreen();
+        });
 
-        // Jalankan fungsi UI kali pertama ketika fail dibuka
-        window.onload = function() {
-            updateUI();
-        };
+        window.onload = refreshScreen;
     </script>
 </body>
 </html>
