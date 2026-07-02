@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monarch Sidebar</title>
+    <title>Monarch Sidebar - Pink Edition</title>
     <style>
         * {
             margin: 0;
@@ -14,7 +14,7 @@
 
         body {
             display: flex;
-            background-color: #0d1224; /* Latar belakang gelap asal */
+            background-color: #240d1a; /* Latar belakang gelap bertema pink */
             color: #ffffff;
             min-height: 100vh;
         }
@@ -22,12 +22,12 @@
         /* --- Gaya Sidebar --- */
         .sidebar {
             width: 260px;
-            background-color: #0a0e1a;
+            background-color: #1a0a13;
             padding: 24px 16px;
             display: flex;
             flex-direction: column;
             gap: 30px;
-            border-right: 1px solid #1e293b;
+            border-right: 1px solid #4c1d3b;
             position: fixed;
             height: 100vh;
         }
@@ -41,7 +41,7 @@
         }
 
         .logo-box {
-            background-color: #4f46e5;
+            background-color: #db2777; /* Pink pekat */
             color: white;
             font-weight: bold;
             font-size: 20px;
@@ -57,6 +57,7 @@
             font-size: 22px;
             font-weight: 700;
             letter-spacing: 0.5px;
+            color: #fbcfe8;
         }
 
         /* Menu Navigasi */
@@ -72,7 +73,7 @@
             align-items: center;
             gap: 16px;
             padding: 14px 16px;
-            color: #94a3b8;
+            color: #f472b6;
             text-decoration: none;
             font-size: 16px;
             font-weight: 500;
@@ -82,13 +83,13 @@
         }
 
         .nav-item:hover {
-            color: #e2e8f0;
-            background-color: rgba(255, 255, 255, 0.03);
+            color: #fff;
+            background-color: rgba(219, 39, 119, 0.1);
         }
 
         .nav-item.active {
-            color: #818cf8;
-            background-color: #1e1b4b; /* Ungu gelap aktif */
+            color: #ffffff;
+            background-color: #9d174d; /* Tapak aktif pink pekat */
         }
 
         /* --- Kawasan Kandungan (Content Area) --- */
@@ -107,7 +108,7 @@
         }
 
         /* ==========================================================================
-           SISTEM TRANSAKSI ACCOUNTS (TEMA GELAP)
+           SISTEM TRANSAKSI ACCOUNTS (TEMA PINK)
            ========================================================================== */
         .top-bar {
             display: flex;
@@ -117,17 +118,18 @@
         }
 
         .btn-new-tx {
-            background-color: #4f46e5;
+            background-color: #db2777;
             color: white;
             border: none;
             padding: 10px 20px;
             font-weight: 600;
             border-radius: 8px;
             cursor: pointer;
+            transition: background 0.2s;
         }
 
         .btn-new-tx:hover {
-            background-color: #4338ca;
+            background-color: #be185d;
         }
 
         .accounts-layout {
@@ -137,8 +139,8 @@
         }
 
         .data-panel {
-            background-color: #0a0e1a;
-            border: 1px solid #1e293b;
+            background-color: #1a0a13;
+            border: 1px solid #4c1d3b;
             border-radius: 12px;
             padding: 20px;
         }
@@ -152,8 +154,8 @@
         .search-input {
             flex: 1;
             padding: 10px 14px;
-            background-color: #0d1224;
-            border: 1px solid #1e293b;
+            background-color: #240d1a;
+            border: 1px solid #4c1d3b;
             color: white;
             border-radius: 8px;
             outline: none;
@@ -161,10 +163,11 @@
 
         .filter-select {
             padding: 10px 14px;
-            background-color: #0d1224;
-            border: 1px solid #1e293b;
+            background-color: #240d1a;
+            border: 1px solid #4c1d3b;
             color: white;
             border-radius: 8px;
+            outline: none;
         }
 
         /* Jadual */
@@ -175,20 +178,20 @@
 
         th {
             padding: 12px 16px;
-            color: #94a3b8;
+            color: #f472b6;
             font-size: 14px;
-            border-bottom: 1px solid #1e293b;
+            border-bottom: 1px solid #4c1d3b;
             text-align: left;
         }
 
         td {
             padding: 14px 16px;
             font-size: 14px;
-            border-bottom: 1px solid #0d1224;
-            color: #e2e8f0;
+            border-bottom: 1px solid #240d1a;
+            color: #fce7f3;
         }
 
-        /* Badges */
+        /* Badges Kategori */
         .badge-cat {
             padding: 4px 10px;
             border-radius: 20px;
@@ -197,7 +200,7 @@
         }
         .cat-food { background-color: rgba(234, 88, 12, 0.2); color: #fb923c; }
         .cat-salary { background-color: rgba(22, 163, 74, 0.2); color: #4ade80; }
-        .cat-transport { background-color: rgba(79, 70, 229, 0.2); color: #818cf8; }
+        .cat-transport { background-color: rgba(14, 165, 233, 0.2); color: #38bdf8; }
         .cat-utilities { background-color: rgba(219, 39, 119, 0.2); color: #f472b6; }
 
         /* Butang Aksi */
@@ -209,20 +212,20 @@
         .btn-action {
             padding: 4px 8px;
             font-size: 12px;
-            background-color: #0d1224;
-            color: #94a3b8;
-            border: 1px solid #1e293b;
+            background-color: #240d1a;
+            color: #f472b6;
+            border: 1px solid #4c1d3b;
             border-radius: 6px;
             cursor: pointer;
         }
-        .btn-action:hover { color: white; background-color: #1e293b; }
+        .btn-action:hover { color: white; background-color: #4c1d3b; }
         .btn-delete { color: #f43f5e; border-color: rgba(244, 63, 94, 0.4); }
         .btn-delete:hover { background-color: rgba(244, 63, 94, 0.2); color: #ff859b; }
 
-        /* Graf */
+        /* Graf Sisi */
         .chart-card {
-            background-color: #0a0e1a;
-            border: 1px solid #1e293b;
+            background-color: #1a0a13;
+            border: 1px solid #4c1d3b;
             border-radius: 12px;
             padding: 20px;
             text-align: center;
@@ -235,28 +238,28 @@
             gap: 24px;
             height: 120px;
             margin-top: 20px;
-            border-bottom: 2px solid #1e293b;
+            border-bottom: 2px solid #4c1d3b;
             padding-bottom: 8px;
         }
 
         .bar { width: 45px; border-radius: 4px 4px 0 0; transition: height 0.3s; }
         .bar-income { background-color: #10b981; }
         .bar-expense { background-color: #f43f5e; }
-        .bar-label { font-size: 11px; color: #94a3b8; margin-top: 6px; }
+        .bar-label { font-size: 11px; color: #f472b6; margin-top: 6px; }
 
         /* Modal Popup */
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.6);
+            background-color: rgba(0,0,0,0.7);
             justify-content: center; align-items: center;
             z-index: 1000;
         }
 
         .modal-content {
-            background-color: #0a0e1a;
-            border: 1px solid #1e293b;
+            background-color: #1a0a13;
+            border: 1px solid #4c1d3b;
             padding: 24px;
             border-radius: 12px;
             width: 400px;
@@ -264,8 +267,8 @@
         }
 
         .form-group { margin-bottom: 14px; }
-        .form-group label { display: block; font-size: 13px; margin-bottom: 6px; color: #94a3b8; }
-        .form-control { width: 100%; padding: 10px; background-color: #0d1224; border: 1px solid #1e293b; color: white; border-radius: 6px; }
+        .form-group label { display: block; font-size: 13px; margin-bottom: 6px; color: #f472b6; }
+        .form-control { width: 100%; padding: 10px; background-color: #240d1a; border: 1px solid #4c1d3b; color: white; border-radius: 6px; outline: none; }
         .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
     </style>
 </head>
@@ -289,7 +292,22 @@
         
         <div id="dashboard" class="page">
             <h2>Selamat Datang ke Dashboard</h2>
-            <p style="color: #94a3b8; margin-top: 5px;">Ini adalah halaman utama anda.</p>
+            <p style="color: #f472b6; margin-top: 5px;">Ini adalah halaman utama anda.</p>
+        </div>
+
+        <div id="cashflow" class="page">
+            <h2>Analisis Cash Flow</h2>
+            <p style="color: #f472b6; margin-top: 5px;">Halaman pemantauan aliran tunai.</p>
+        </div>
+
+        <div id="goals" class="page">
+            <h2>Simpanan & Goals</h2>
+            <p style="color: #f472b6; margin-top: 5px;">Urus sasaran kewangan anda di sini.</p>
+        </div>
+
+        <div id="settings" class="page">
+            <h2>Tetapan Sistem</h2>
+            <p style="color: #f472b6; margin-top: 5px;">Konfigurasi akaun dan tema.</p>
         </div>
 
         <div id="accounts" class="page active">
@@ -340,8 +358,8 @@
                             </div>
                         </div>
                         <div style="margin-top: 15px; text-align: left; font-size: 13px;">
-                            <p>🟢 Masuk: <b id="lblIncome" style="color:#10b981;">RM 0</b></p>
-                            <p>🔴 Keluar: <b id="lblExpense" style="color:#f43f5e;">RM 0</b></p>
+                            <p>🟢 Masuk: <b id="lblIncome" style="color:#10b981;">RM 0.00</b></p>
+                            <p>🔴 Keluar: <b id="lblExpense" style="color:#f43f5e;">RM 0.00</b></p>
                         </div>
                     </div>
                 </div>
@@ -354,8 +372,14 @@
             <h3 id="modalTitle">Tambah Transaksi</h3><br>
             <form id="txForm">
                 <input type="hidden" id="editIndex">
-                <div class="form-group"><label>Tarikh</label><input type="date" id="txDate" class="form-control" required></div>
-                <div class="form-group"><label>Deskripsi</label><input type="text" id="txDesc" class="form-control" placeholder="Contoh: Makan Malam" required></div>
+                <div class="form-group">
+                    <label>Tarikh</label>
+                    <input type="date" id="txDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Deskripsi</label>
+                    <input type="text" id="txDesc" class="form-control" placeholder="Contoh: Makan Malam" required>
+                </div>
                 <div class="form-group">
                     <label>Kategori</label>
                     <select id="txCat" class="form-control">
@@ -372,7 +396,10 @@
                         <option value="Expense">Expense (Keluar)</option>
                     </select>
                 </div>
-                <div class="form-group"><label>Jumlah (RM)</label><input type="number" id="txAmount" class="form-control" step="0.01" required></div>
+                <div class="form-group">
+                    <label>Jumlah (RM)</label>
+                    <input type="number" id="txAmount" class="form-control" step="0.01" required>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-action" onclick="tutupModal()">CANCEL</button>
                     <button type="submit" class="btn-new-tx">SAVE CHANGES</button>
@@ -382,11 +409,11 @@
     </div>
 
     <script>
-        // Data permulaan
+        // Data permulaan (Ditukar format tarikh standard YYYY-MM-DD supaya sistem tidak bug)
         let db = JSON.parse(localStorage.getItem('monarch_db_v2')) || [
-            { date: '19-Feb-22', desc: 'Makan di Mamak', cat: 'Food & Drink', type: 'Deposit', amount: 200 },
-            { date: '19-Feb-22', desc: 'Gaji Bulan Julai', cat: 'Salary', type: 'Expense', amount: 3000 },
-            { date: '13-Feb-22', desc: 'Petrol (Shell)', cat: 'Transport', type: 'Expense', amount: 50 }
+            { date: '2026-02-19', desc: 'Makan di Mamak', cat: 'Food & Drink', type: 'Expense', amount: 15.50 },
+            { date: '2026-02-28', desc: 'Gaji Bulan Ini', cat: 'Salary', type: 'Deposit', amount: 3500.00 },
+            { date: '2026-02-20', desc: 'Petrol Shell', cat: 'Transport', type: 'Expense', amount: 50.00 }
         ];
 
         function tukarPage(id, el) {
@@ -396,31 +423,42 @@
             el.classList.add('active');
         }
 
+        // Memaparkan data dengan betul
         function paparkanData(dataSuntikan = db) {
             const tbody = document.getElementById('txTableBody');
             tbody.innerHTML = '';
             let totalIn = 0, totalOut = 0;
 
-            dataSuntikan.forEach((item, index) => {
+            // Cari jumlah keseluruhan berdasarkan data asal (bukan penapis semata-mata untuk kestabilan graf)
+            db.forEach(item => {
                 if(item.type === 'Deposit') totalIn += item.amount;
                 else totalOut += item.amount;
+            });
+
+            dataSuntikan.forEach((item) => {
+                // Cari index sebenar item dalam database utama (db) untuk rujukan Edit/Delete
+                let indexSebenar = db.indexOf(item);
 
                 let classCat = 'cat-food';
                 if(item.cat === 'Salary') classCat = 'cat-salary';
                 if(item.cat === 'Transport') classCat = 'cat-transport';
                 if(item.cat === 'Utilities') classCat = 'cat-utilities';
 
+                // Format susunan tarikh paparan (DD-MM-YYYY)
+                let dateParts = item.date.split('-');
+                let tarikhSesuai = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+
                 tbody.innerHTML += `<tr>
-                    <td>${item.date}</td>
+                    <td>${tarikhSesuai}</td>
                     <td>${item.desc}</td>
                     <td><span class="badge-cat ${classCat}">${item.cat}</span></td>
-                    <td style="color:${item.type==='Deposit'?'#10b981':'#f43f5e'}">➔ ${item.type}</td>
+                    <td style="color:${item.type==='Deposit'?'#10b981':'#f43f5e'}">${item.type === 'Deposit' ? '➔ Masuk' : '➔ Keluar'}</td>
                     <td>RM ${item.amount.toFixed(2)}</td>
                     <td>
                         <div class="action-btns">
-                            <button class="btn-action" onclick="editRow(${index})">Edit</button>
-                            <button class="btn-action btn-delete" onclick="deleteRow(${index})">Delete</button>
-                            <button class="btn-action" onclick="copyRow(${index})">Copy</button>
+                            <button class="btn-action" onclick="editRow(${indexSebenar})">Edit</button>
+                            <button class="btn-action btn-delete" onclick="deleteRow(${indexSebenar})">Delete</button>
+                            <button class="btn-action" onclick="copyRow(${indexSebenar})">Copy</button>
                         </div>
                     </td>
                 </tr>`;
@@ -428,9 +466,11 @@
 
             document.getElementById('lblIncome').innerText = `RM ${totalIn.toFixed(2)}`;
             document.getElementById('lblExpense').innerText = `RM ${totalOut.toFixed(2)}`;
+            
             let max = Math.max(totalIn, totalOut, 100);
             document.getElementById('barIncome').style.height = `${(totalIn/max) * 100}px`;
             document.getElementById('barExpense').style.height = `${(totalOut/max) * 100}px`;
+            
             localStorage.setItem('monarch_db_v2', JSON.stringify(db));
         }
 
@@ -445,36 +485,57 @@
             document.getElementById('txForm').reset();
             document.getElementById('editIndex').value = '';
             document.getElementById('modalTitle').innerText = "Tambah Transaksi";
-            document.getElementById('txDate').valueAsDate = new Date();
+            
+            // Set tarikh hari ini secara automatik (Format YYYY-MM-DD)
+            let today = new Date().toISOString().split('T')[0];
+            document.getElementById('txDate').value = today;
+            
             document.getElementById('txModal').style.display = 'flex';
         }
+        
         function tutupModal() { document.getElementById('txModal').style.display = 'none'; }
 
+        // Menyimpan data (Sama ada data baru atau kemaskini data lama)
         document.getElementById('txForm').addEventListener('submit', function(e){
             e.preventDefault();
             let idx = document.getElementById('editIndex').value;
-            let d = new Date(document.getElementById('txDate').value);
-            let tgl = `${d.getDate()}-${d.toLocaleString('default', {month: 'short'})}-${d.getFullYear().toString().substr(-2)}`;
             
             let dataBaru = {
-                date: tgl,
+                date: document.getElementById('txDate').value, // Simpan terus format YYYY-MM-DD
                 desc: document.getElementById('txDesc').value,
                 cat: document.getElementById('txCat').value,
                 type: document.getElementById('txType').value,
                 amount: parseFloat(document.getElementById('txAmount').value)
             };
 
-            if(idx === '') db.push(dataBaru);
-            else db[idx] = dataBaru;
+            if(idx === '') {
+                db.push(dataBaru); // Tambah baru
+            } else {
+                db[idx] = dataBaru; // Kemaskini yang lama
+            }
 
-            tutupModal(); paparkanData();
+            tutupModal(); 
+            paparkanData();
         });
 
-        function deleteRow(index) { if(confirm("Padam rekod?")) { db.splice(index, 1); paparkanData(); } }
-        function copyRow(index) { let c = Object.assign({}, db[index]); c.desc += " (Salinan)"; db.push(c); paparkanData(); }
+        function deleteRow(index) { 
+            if(confirm("Adakah anda pasti mahu memadam rekod ini?")) { 
+                db.splice(index, 1); 
+                paparkanData(); 
+            } 
+        }
+        
+        function copyRow(index) { 
+            let c = Object.assign({}, db[index]); 
+            c.desc += " (Salinan)"; 
+            db.push(c); 
+            paparkanData(); 
+        }
+        
         function editRow(index) {
             let item = db[index];
             document.getElementById('editIndex').value = index;
+            document.getElementById('txDate').value = item.date;
             document.getElementById('txDesc').value = item.desc;
             document.getElementById('txCat').value = item.cat;
             document.getElementById('txType').value = item.type;
@@ -483,6 +544,7 @@
             document.getElementById('txModal').style.display = 'flex';
         }
 
+        // Jalankan aplikasi pada kali pertama halaman dibuka
         paparkanData();
     </script>
 </body>
