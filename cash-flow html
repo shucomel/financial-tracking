@@ -108,7 +108,7 @@
         }
 
         /* ==========================================================================
-           SISTEM TRANSAKSI ACCOUNTS (TEMA PINK)
+           SISTEM TRANSAKSI ACCOUNTS & CASH FLOW (TEMA PINK)
            ========================================================================== */
         .top-bar {
             display: flex;
@@ -247,6 +247,35 @@
         .bar-expense { background-color: #f43f5e; }
         .bar-label { font-size: 11px; color: #f472b6; margin-top: 6px; }
 
+        /* --- Gaya Gaya Khas Cash Flow Page --- */
+        .cf-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+        .cf-card {
+            background-color: #1a0a13;
+            border: 1px solid #4c1d3b;
+            border-radius: 12px;
+            padding: 24px;
+        }
+        .cf-card h3 { font-size: 14px; color: #f472b6; margin-bottom: 10px; font-weight: 500; }
+        .cf-card .cf-amount { font-size: 28px; font-weight: 700; }
+        
+        .analysis-section {
+            background-color: #1a0a13;
+            border: 1px solid #4c1d3b;
+            border-radius: 12px;
+            padding: 24px;
+        }
+        .analysis-section h3 { margin-bottom: 20px; color: #fbcfe8; }
+        .progress-group { margin-bottom: 18px; }
+        .progress-info { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 6px; color: #f472b6; }
+        .progress-bg { background-color: #240d1a; height: 10px; border-radius: 10px; overflow: hidden; border: 1px solid #4c1d3b; }
+        .progress-bar { height: 100%; background-color: #db2777; width: 0%; transition: width 0.4s; }
+
         /* Modal Popup */
         .modal {
             display: none;
@@ -289,7 +318,7 @@
     </div>
 
     <div class="main-content">
-        
+         
         <div id="dashboard" class="page">
             <h2>Selamat Datang ke Dashboard</h2>
             <p style="color: #f472b6; margin-top: 5px;">Ini adalah halaman utama anda.</p>
@@ -297,7 +326,50 @@
 
         <div id="cashflow" class="page">
             <h2>Analisis Cash Flow</h2>
-            <p style="color: #f472b6; margin-top: 5px;">Halaman pemantauan aliran tunai.</p>
+            <p style="color: #f472b6; margin-top: 5px;">Halaman pemantauan aliran tunai semasa anda.</p>
+
+            <div class="cf-grid">
+                <div class="cf-card">
+                    <h3>Total Income (Kemasukan)</h3>
+                    <div class="cf-amount" id="cfTotalIncome" style="color: #10b981;">RM 0.00</div>
+                </div>
+                <div class="cf-card">
+                    <h3>Total Expenses (Pengeluaran)</h3>
+                    <div class="cf-amount" id="cfTotalExpense" style="color: #f43f5e;">RM 0.00</div>
+                </div>
+                <div class="cf-card">
+                    <h3>Net Cash Flow (Aliran Bersih)</h3>
+                    <div class="cf-amount" id="cfNetFlow">RM 0.00</div>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <h3>Agihan Perbelanjaan Mengikut Kategori</h3>
+                
+                <div class="progress-group">
+                    <div class="progress-info">
+                        <span>Food & Drink</span>
+                        <span id="txtCfFood">RM 0.00 (0%)</span>
+                    </div>
+                    <div class="progress-bg"><div id="barCfFood" class="progress-bar" style="background-color: #fb923c;"></div></div>
+                </div>
+
+                <div class="progress-group">
+                    <div class="progress-info">
+                        <span>Transport</span>
+                        <span id="txtCfTransport">RM 0.00 (0%)</span>
+                    </div>
+                    <div class="progress-bg"><div id="barCfTransport" class="progress-bar" style="background-color: #38bdf8;"></div></div>
+                </div>
+
+                <div class="progress-group">
+                    <div class="progress-info">
+                        <span>Utilities</span>
+                        <span id="txtCfUtilities">RM 0.00 (0%)</span>
+                    </div>
+                    <div class="progress-bg"><div id="barCfUtilities" class="progress-bar" style="background-color: #f472b6;"></div></div>
+                </div>
+            </div>
         </div>
 
         <div id="goals" class="page">
@@ -409,7 +481,7 @@
     </div>
 
     <script>
-        // Data permulaan (Ditukar format tarikh standard YYYY-MM-DD supaya sistem tidak bug)
+        // Data permulaan
         let db = JSON.parse(localStorage.getItem('monarch_db_v2')) || [
             { date: '2026-02-19', desc: 'Makan di Mamak', cat: 'Food & Drink', type: 'Expense', amount: 15.50 },
             { date: '2026-02-28', desc: 'Gaji Bulan Ini', cat: 'Salary', type: 'Deposit', amount: 3500.00 },
@@ -423,20 +495,28 @@
             el.classList.add('active');
         }
 
-        // Memaparkan data dengan betul
+        // Memaparkan data & Mengira statistik (Accounts + Cash Flow)
         function paparkanData(dataSuntikan = db) {
             const tbody = document.getElementById('txTableBody');
             tbody.innerHTML = '';
+            
             let totalIn = 0, totalOut = 0;
+            let catExp = { 'Food & Drink': 0, 'Transport': 0, 'Utilities': 0 };
 
-            // Cari jumlah keseluruhan berdasarkan data asal (bukan penapis semata-mata untuk kestabilan graf)
+            // Kira data keseluruhan daripada database utama (db)
             db.forEach(item => {
-                if(item.type === 'Deposit') totalIn += item.amount;
-                else totalOut += item.amount;
+                if(item.type === 'Deposit') {
+                    totalIn += item.amount;
+                } else {
+                    totalOut += item.amount;
+                    if(catExp.hasOwnProperty(item.cat)) {
+                        catExp[item.cat] += item.amount;
+                    }
+                }
             });
 
+            // Papar rekod jadual (berdasarkan data suntikan / tapis data)
             dataSuntikan.forEach((item) => {
-                // Cari index sebenar item dalam database utama (db) untuk rujukan Edit/Delete
                 let indexSebenar = db.indexOf(item);
 
                 let classCat = 'cat-food';
@@ -444,7 +524,6 @@
                 if(item.cat === 'Transport') classCat = 'cat-transport';
                 if(item.cat === 'Utilities') classCat = 'cat-utilities';
 
-                // Format susunan tarikh paparan (DD-MM-YYYY)
                 let dateParts = item.date.split('-');
                 let tarikhSesuai = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
 
@@ -464,13 +543,46 @@
                 </tr>`;
             });
 
+            // --- KEMASKINI UI ACCOUNTS PANEL ---
             document.getElementById('lblIncome').innerText = `RM ${totalIn.toFixed(2)}`;
             document.getElementById('lblExpense').innerText = `RM ${totalOut.toFixed(2)}`;
             
             let max = Math.max(totalIn, totalOut, 100);
             document.getElementById('barIncome').style.height = `${(totalIn/max) * 100}px`;
             document.getElementById('barExpense').style.height = `${(totalOut/max) * 100}px`;
+
+            // --- KEMASKINI UI CASH FLOW PAGE ---
+            document.getElementById('cfTotalIncome').innerText = `RM ${totalIn.toFixed(2)}`;
+            document.getElementById('cfTotalExpense').innerText = `RM ${totalOut.toFixed(2)}`;
             
+            let netFlow = totalIn - totalOut;
+            const netEl = document.getElementById('cfNetFlow');
+            netEl.innerText = `RM ${netFlow.toFixed(2)}`;
+            if(netFlow >= 0) {
+                netEl.style.color = '#10b981'; // Hijau jika positif
+            } else {
+                netEl.style.color = '#f43f5e'; // Merah jika negatif
+            }
+
+            // Kemaskini Bar Analisis Kategori Perbelanjaan
+            let totalSumbanganKategori = totalOut > 0 ? totalOut : 1; 
+            
+            // Food & Drink
+            let pctFood = (catExp['Food & Drink'] / totalSumbanganKategori) * 100;
+            document.getElementById('txtCfFood').innerText = `RM ${catExp['Food & Drink'].toFixed(2)} (${pctFood.toFixed(1)}%)`;
+            document.getElementById('barCfFood').style.width = `${pctFood}%`;
+
+            // Transport
+            let pctTrans = (catExp['Transport'] / totalSumbanganKategori) * 100;
+            document.getElementById('txtCfTransport').innerText = `RM ${catExp['Transport'].toFixed(2)} (${pctTrans.toFixed(1)}%)`;
+            document.getElementById('barCfTransport').style.width = `${pctTrans}%`;
+
+            // Utilities
+            let pctUtil = (catExp['Utilities'] / totalSumbanganKategori) * 100;
+            document.getElementById('txtCfUtilities').innerText = `RM ${catExp['Utilities'].toFixed(2)} (${pctUtil.toFixed(1)}%)`;
+            document.getElementById('barCfUtilities').style.width = `${pctUtil}%`;
+            
+            // Simpan database ke LocalStorage
             localStorage.setItem('monarch_db_v2', JSON.stringify(db));
         }
 
@@ -486,7 +598,6 @@
             document.getElementById('editIndex').value = '';
             document.getElementById('modalTitle').innerText = "Tambah Transaksi";
             
-            // Set tarikh hari ini secara automatik (Format YYYY-MM-DD)
             let today = new Date().toISOString().split('T')[0];
             document.getElementById('txDate').value = today;
             
@@ -495,13 +606,12 @@
         
         function tutupModal() { document.getElementById('txModal').style.display = 'none'; }
 
-        // Menyimpan data (Sama ada data baru atau kemaskini data lama)
         document.getElementById('txForm').addEventListener('submit', function(e){
             e.preventDefault();
             let idx = document.getElementById('editIndex').value;
             
             let dataBaru = {
-                date: document.getElementById('txDate').value, // Simpan terus format YYYY-MM-DD
+                date: document.getElementById('txDate').value,
                 desc: document.getElementById('txDesc').value,
                 cat: document.getElementById('txCat').value,
                 type: document.getElementById('txType').value,
@@ -509,9 +619,9 @@
             };
 
             if(idx === '') {
-                db.push(dataBaru); // Tambah baru
+                db.push(dataBaru);
             } else {
-                db[idx] = dataBaru; // Kemaskini yang lama
+                db[idx] = dataBaru;
             }
 
             tutupModal(); 
@@ -544,7 +654,7 @@
             document.getElementById('txModal').style.display = 'flex';
         }
 
-        // Jalankan aplikasi pada kali pertama halaman dibuka
+        // Jalankan sistem kali pertama
         paparkanData();
     </script>
 </body>
