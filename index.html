@@ -3,269 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monarch Sidebar - Pink Edition</title>
+    <title>Monarch - Accounts</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { display: flex; background-color: #240d1a; color: #ffffff; min-height: 100vh; }
+        
+        /* Sidebar */
+        .sidebar { width: 260px; background-color: #1a0a13; padding: 24px 16px; display: flex; flex-direction: column; gap: 30px; border-right: 1px solid #4c1d3b; position: fixed; height: 100vh; }
+        .logo-container { display: flex; align-items: center; gap: 12px; padding-left: 8px; }
+        .logo-box { background-color: #db2777; color: white; font-weight: bold; font-size: 20px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
+        .logo-text { font-size: 22px; font-weight: 700; letter-spacing: 0.5px; color: #fbcfe8; }
+        .nav-menu { display: flex; flex-direction: column; gap: 8px; list-style: none; }
+        .nav-item { display: flex; align-items: center; gap: 16px; padding: 14px 16px; color: #f472b6; text-decoration: none; font-size: 16px; font-weight: 500; border-radius: 12px; cursor: pointer; transition: all 0.2s ease; }
+        .nav-item:hover { color: #fff; background-color: rgba(219, 39, 119, 0.1); }
+        .nav-item.active { color: #ffffff; background-color: #9d174d; }
 
-        body {
-            display: flex;
-            background-color: #240d1a; /* Latar belakang gelap bertema pink */
-            color: #ffffff;
-            min-height: 100vh;
-        }
+        /* Main Content */
+        .main-content { margin-left: 260px; padding: 40px; width: calc(100% - 260px); }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .btn-new-tx { background-color: #db2777; color: white; border: none; padding: 10px 20px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background 0.2s; }
+        .btn-new-tx:hover { background-color: #be185d; }
+        
+        .accounts-layout { display: grid; grid-template-columns: 1fr 280px; gap: 24px; }
+        .data-panel { background-color: #1a0a13; border: 1px solid #4c1d3b; border-radius: 12px; padding: 20px; }
+        .filter-bar { display: flex; gap: 12px; margin-bottom: 20px; }
+        .search-input, .filter-select { padding: 10px 14px; background-color: #240d1a; border: 1px solid #4c1d3b; color: white; border-radius: 8px; outline: none; }
+        .search-input { flex: 1; }
 
-        /* --- Gaya Sidebar --- */
-        .sidebar {
-            width: 260px;
-            background-color: #1a0a13;
-            padding: 24px 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-            border-right: 1px solid #4c1d3b;
-            position: fixed;
-            height: 100vh;
-        }
-
-        /* Logo Monarch */
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding-left: 8px;
-        }
-
-        .logo-box {
-            background-color: #db2777; /* Pink pekat */
-            color: white;
-            font-weight: bold;
-            font-size: 20px;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-        }
-
-        .logo-text {
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            color: #fbcfe8;
-        }
-
-        /* Menu Navigasi */
-        .nav-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            list-style: none;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 14px 16px;
-            color: #f472b6;
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: 500;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .nav-item:hover {
-            color: #fff;
-            background-color: rgba(219, 39, 119, 0.1);
-        }
-
-        .nav-item.active {
-            color: #ffffff;
-            background-color: #9d174d; /* Tapak aktif pink pekat */
-        }
-
-        /* --- Kawasan Kandungan (Content Area) --- */
-        .main-content {
-            margin-left: 260px;
-            padding: 40px;
-            width: calc(100% - 260px);
-        }
-
-        .page {
-            display: none;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        /* ==========================================================================
-           SISTEM TRANSAKSI ACCOUNTS (TEMA PINK)
-           ========================================================================== */
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .btn-new-tx {
-            background-color: #db2777;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .btn-new-tx:hover {
-            background-color: #be185d;
-        }
-
-        .accounts-layout {
-            display: grid;
-            grid-template-columns: 1fr 280px;
-            gap: 24px;
-        }
-
-        .data-panel {
-            background-color: #1a0a13;
-            border: 1px solid #4c1d3b;
-            border-radius: 12px;
-            padding: 20px;
-        }
-
-        .filter-bar {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .search-input {
-            flex: 1;
-            padding: 10px 14px;
-            background-color: #240d1a;
-            border: 1px solid #4c1d3b;
-            color: white;
-            border-radius: 8px;
-            outline: none;
-        }
-
-        .filter-select {
-            padding: 10px 14px;
-            background-color: #240d1a;
-            border: 1px solid #4c1d3b;
-            color: white;
-            border-radius: 8px;
-            outline: none;
-        }
-
-        /* Jadual */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            padding: 12px 16px;
-            color: #f472b6;
-            font-size: 14px;
-            border-bottom: 1px solid #4c1d3b;
-            text-align: left;
-        }
-
-        td {
-            padding: 14px 16px;
-            font-size: 14px;
-            border-bottom: 1px solid #240d1a;
-            color: #fce7f3;
-        }
-
-        /* Badges Kategori */
-        .badge-cat {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
+        /* Table */
+        table { width: 100%; border-collapse: collapse; }
+        th { padding: 12px 16px; color: #f472b6; font-size: 14px; border-bottom: 1px solid #4c1d3b; text-align: left; }
+        td { padding: 14px 16px; font-size: 14px; border-bottom: 1px solid #240d1a; color: #fce7f3; }
+        
+        /* Badges & Buttons */
+        .badge-cat { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
         .cat-food { background-color: rgba(234, 88, 12, 0.2); color: #fb923c; }
         .cat-salary { background-color: rgba(22, 163, 74, 0.2); color: #4ade80; }
         .cat-transport { background-color: rgba(14, 165, 233, 0.2); color: #38bdf8; }
         .cat-utilities { background-color: rgba(219, 39, 119, 0.2); color: #f472b6; }
-
-        /* Butang Aksi */
-        .action-btns {
-            display: flex;
-            gap: 6px;
-        }
-
-        .btn-action {
-            padding: 4px 8px;
-            font-size: 12px;
-            background-color: #240d1a;
-            color: #f472b6;
-            border: 1px solid #4c1d3b;
-            border-radius: 6px;
-            cursor: pointer;
-        }
+        
+        .action-btns { display: flex; gap: 6px; }
+        .btn-action { padding: 4px 8px; font-size: 12px; background-color: #240d1a; color: #f472b6; border: 1px solid #4c1d3b; border-radius: 6px; cursor: pointer; }
         .btn-action:hover { color: white; background-color: #4c1d3b; }
         .btn-delete { color: #f43f5e; border-color: rgba(244, 63, 94, 0.4); }
         .btn-delete:hover { background-color: rgba(244, 63, 94, 0.2); color: #ff859b; }
 
-        /* Graf Sisi */
-        .chart-card {
-            background-color: #1a0a13;
-            border: 1px solid #4c1d3b;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .chart-box {
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            gap: 24px;
-            height: 120px;
-            margin-top: 20px;
-            border-bottom: 2px solid #4c1d3b;
-            padding-bottom: 8px;
-        }
-
+        /* Chart Side */
+        .chart-card { background-color: #1a0a13; border: 1px solid #4c1d3b; border-radius: 12px; padding: 20px; text-align: center; }
+        .chart-box { display: flex; justify-content: center; align-items: flex-end; gap: 24px; height: 120px; margin-top: 20px; border-bottom: 2px solid #4c1d3b; padding-bottom: 8px; }
         .bar { width: 45px; border-radius: 4px 4px 0 0; transition: height 0.3s; }
         .bar-income { background-color: #10b981; }
         .bar-expense { background-color: #f43f5e; }
         .bar-label { font-size: 11px; color: #f472b6; margin-top: 6px; }
 
-        /* Modal Popup */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.7);
-            justify-content: center; align-items: center;
-            z-index: 1000;
-        }
-
-        .modal-content {
-            background-color: #1a0a13;
-            border: 1px solid #4c1d3b;
-            padding: 24px;
-            border-radius: 12px;
-            width: 400px;
-            color: white;
-        }
-
+        /* Modal */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background-color: #1a0a13; border: 1px solid #4c1d3b; padding: 24px; border-radius: 12px; width: 400px; color: white; }
         .form-group { margin-bottom: 14px; }
         .form-group label { display: block; font-size: 13px; margin-bottom: 6px; color: #f472b6; }
         .form-control { width: 100%; padding: 10px; background-color: #240d1a; border: 1px solid #4c1d3b; color: white; border-radius: 6px; outline: none; }
@@ -280,87 +73,64 @@
             <span class="logo-text">monarch</span>
         </div>
         <ul class="nav-menu">
-            <li><a href="#" class="nav-item" onclick="tukarPage('dashboard', this)"><span class="nav-icon">🏠</span> Dashboard</a></li>
-            <li><a href="#" class="nav-item active" onclick="tukarPage('accounts', this)"><span class="nav-icon">💰</span> Accounts</a></li>
-            <li><a href="#" class="nav-item" onclick="tukarPage('cashflow', this)"><span class="nav-icon">📊</span> Cash Flow</a></li>
-            <li><a href="#" class="nav-item" onclick="tukarPage('goals', this)"><span class="nav-icon">🎯</span> Goals</a></li>
-            <li><a href="#" class="nav-item" onclick="tukarPage('settings', this)"><span class="nav-icon">⚙️</span> Settings</a></li>
+            <li><a href="#" class="nav-item"><span class="nav-icon">🏠</span> Dashboard</a></li>
+            <li><a href="index.html" class="nav-item active"><span class="nav-icon">💰</span> Accounts</a></li>
+            <li><a href="cashflow.html" class="nav-item"><span class="nav-icon">📊</span> Cash Flow</a></li>
+            <li><a href="#" class="nav-item"><span class="nav-icon">🎯</span> Goals</a></li>
+            <li><a href="#" class="nav-item"><span class="nav-icon">⚙️</span> Settings</a></li>
         </ul>
     </div>
 
     <div class="main-content">
-        
-        <div id="dashboard" class="page">
-            <h2>Selamat Datang ke Dashboard</h2>
-            <p style="color: #f472b6; margin-top: 5px;">Ini adalah halaman utama anda.</p>
+        <div class="top-bar">
+            <h2>Akaun & Transaksi</h2>
+            <button class="btn-new-tx" onclick="bukaModal()">+ NEW TRANSACTION</button>
         </div>
 
-        <div id="cashflow" class="page">
-            <h2>Analisis Cash Flow</h2>
-            <p style="color: #f472b6; margin-top: 5px;">Halaman pemantauan aliran tunai.</p>
-        </div>
-
-        <div id="goals" class="page">
-            <h2>Simpanan & Goals</h2>
-            <p style="color: #f472b6; margin-top: 5px;">Urus sasaran kewangan anda di sini.</p>
-        </div>
-
-        <div id="settings" class="page">
-            <h2>Tetapan Sistem</h2>
-            <p style="color: #f472b6; margin-top: 5px;">Konfigurasi akaun dan tema.</p>
-        </div>
-
-        <div id="accounts" class="page active">
-            <div class="top-bar">
-                <h2>Akaun & Transaksi</h2>
-                <button class="btn-new-tx" onclick="bukaModal()">+ NEW TRANSACTION</button>
-            </div>
-
-            <div class="accounts-layout">
-                <div class="data-panel">
-                    <div class="filter-bar">
-                        <input type="text" id="searchBox" class="search-input" placeholder="Cari transaksi..." oninput="tapisData()">
-                        <select id="filterCategory" class="filter-select" onchange="tapisData()">
-                            <option value="All">Semua Kategori</option>
-                            <option value="Salary">Salary</option>
-                            <option value="Food & Drink">Food & Drink</option>
-                            <option value="Transport">Transport</option>
-                            <option value="Utilities">Utilities</option>
-                        </select>
-                    </div>
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Description</th>
-                                <th>Category</th>
-                                <th>Type</th>
-                                <th>Amount</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="txTableBody"></tbody>
-                    </table>
+        <div class="accounts-layout">
+            <div class="data-panel">
+                <div class="filter-bar">
+                    <input type="text" id="searchBox" class="search-input" placeholder="Cari transaksi..." oninput="tapisData()">
+                    <select id="filterCategory" class="filter-select" onchange="tapisData()">
+                        <option value="All">Semua Kategori</option>
+                        <option value="Salary">Salary</option>
+                        <option value="Food & Drink">Food & Drink</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Utilities">Utilities</option>
+                    </select>
                 </div>
 
-                <div class="side-panel">
-                    <div class="chart-card">
-                        <h4>Ringkasan Aliran</h4>
-                        <div class="chart-box">
-                            <div>
-                                <div id="barIncome" class="bar bar-income" style="height: 0px;"></div>
-                                <div class="bar-label">Income</div>
-                            </div>
-                            <div>
-                                <div id="barExpense" class="bar bar-expense" style="height: 0px;"></div>
-                                <div class="bar-label">Expenses</div>
-                            </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="txTableBody"></tbody>
+                </table>
+            </div>
+
+            <div class="side-panel">
+                <div class="chart-card">
+                    <h4>Ringkasan Aliran</h4>
+                    <div class="chart-box">
+                        <div>
+                            <div id="barIncome" class="bar bar-income" style="height: 0px;"></div>
+                            <div class="bar-label">Income</div>
                         </div>
-                        <div style="margin-top: 15px; text-align: left; font-size: 13px;">
-                            <p>🟢 Masuk: <b id="lblIncome" style="color:#10b981;">RM 0.00</b></p>
-                            <p>🔴 Keluar: <b id="lblExpense" style="color:#f43f5e;">RM 0.00</b></p>
+                        <div>
+                            <div id="barExpense" class="bar bar-expense" style="height: 0px;"></div>
+                            <div class="bar-label">Expenses</div>
                         </div>
+                    </div>
+                    <div style="margin-top: 15px; text-align: left; font-size: 13px;">
+                        <p>🟢 Masuk: <b id="lblIncome" style="color:#10b981;">RM 0.00</b></p>
+                        <p>🔴 Keluar: <b id="lblExpense" style="color:#f43f5e;">RM 0.00</b></p>
                     </div>
                 </div>
             </div>
@@ -409,42 +179,29 @@
     </div>
 
     <script>
-        // Data permulaan (Ditukar format tarikh standard YYYY-MM-DD supaya sistem tidak bug)
         let db = JSON.parse(localStorage.getItem('monarch_db_v2')) || [
             { date: '2026-02-19', desc: 'Makan di Mamak', cat: 'Food & Drink', type: 'Expense', amount: 15.50 },
             { date: '2026-02-28', desc: 'Gaji Bulan Ini', cat: 'Salary', type: 'Deposit', amount: 3500.00 },
             { date: '2026-02-20', desc: 'Petrol Shell', cat: 'Transport', type: 'Expense', amount: 50.00 }
         ];
 
-        function tukarPage(id, el) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(m => m.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            el.classList.add('active');
-        }
-
-        // Memaparkan data dengan betul
         function paparkanData(dataSuntikan = db) {
             const tbody = document.getElementById('txTableBody');
             tbody.innerHTML = '';
             let totalIn = 0, totalOut = 0;
 
-            // Cari jumlah keseluruhan berdasarkan data asal (bukan penapis semata-mata untuk kestabilan graf)
             db.forEach(item => {
                 if(item.type === 'Deposit') totalIn += item.amount;
                 else totalOut += item.amount;
             });
 
             dataSuntikan.forEach((item) => {
-                // Cari index sebenar item dalam database utama (db) untuk rujukan Edit/Delete
                 let indexSebenar = db.indexOf(item);
-
                 let classCat = 'cat-food';
                 if(item.cat === 'Salary') classCat = 'cat-salary';
                 if(item.cat === 'Transport') classCat = 'cat-transport';
                 if(item.cat === 'Utilities') classCat = 'cat-utilities';
 
-                // Format susunan tarikh paparan (DD-MM-YYYY)
                 let dateParts = item.date.split('-');
                 let tarikhSesuai = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
 
@@ -485,53 +242,32 @@
             document.getElementById('txForm').reset();
             document.getElementById('editIndex').value = '';
             document.getElementById('modalTitle').innerText = "Tambah Transaksi";
-            
-            // Set tarikh hari ini secara automatik (Format YYYY-MM-DD)
             let today = new Date().toISOString().split('T')[0];
             document.getElementById('txDate').value = today;
-            
             document.getElementById('txModal').style.display = 'flex';
         }
         
         function tutupModal() { document.getElementById('txModal').style.display = 'none'; }
 
-        // Menyimpan data (Sama ada data baru atau kemaskini data lama)
         document.getElementById('txForm').addEventListener('submit', function(e){
             e.preventDefault();
             let idx = document.getElementById('editIndex').value;
-            
             let dataBaru = {
-                date: document.getElementById('txDate').value, // Simpan terus format YYYY-MM-DD
+                date: document.getElementById('txDate').value,
                 desc: document.getElementById('txDesc').value,
                 cat: document.getElementById('txCat').value,
                 type: document.getElementById('txType').value,
                 amount: parseFloat(document.getElementById('txAmount').value)
             };
 
-            if(idx === '') {
-                db.push(dataBaru); // Tambah baru
-            } else {
-                db[idx] = dataBaru; // Kemaskini yang lama
-            }
+            if(idx === '') db.push(dataBaru);
+            else db[idx] = dataBaru;
 
-            tutupModal(); 
-            paparkanData();
+            tutupModal(); paparkanData();
         });
 
-        function deleteRow(index) { 
-            if(confirm("Adakah anda pasti mahu memadam rekod ini?")) { 
-                db.splice(index, 1); 
-                paparkanData(); 
-            } 
-        }
-        
-        function copyRow(index) { 
-            let c = Object.assign({}, db[index]); 
-            c.desc += " (Salinan)"; 
-            db.push(c); 
-            paparkanData(); 
-        }
-        
+        function deleteRow(index) { if(confirm("Adakah anda pasti?")) { db.splice(index, 1); paparkanData(); } }
+        function copyRow(index) { let c = Object.assign({}, db[index]); c.desc += " (Salinan)"; db.push(c); paparkanData(); }
         function editRow(index) {
             let item = db[index];
             document.getElementById('editIndex').value = index;
@@ -544,7 +280,6 @@
             document.getElementById('txModal').style.display = 'flex';
         }
 
-        // Jalankan aplikasi pada kali pertama halaman dibuka
         paparkanData();
     </script>
 </body>
