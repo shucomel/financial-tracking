@@ -138,4 +138,149 @@
     </div>
 
     <div id="txModal" class="modal">
-        <div class="
+        <div class="modal-content">
+            <h3 id="modalTitle">Tambah Transaksi</h3><br>
+            <form id="txForm">
+                <input type="hidden" id="editIndex">
+                <div class="form-group">
+                    <label>Tarikh</label>
+                    <input type="date" id="txDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Deskripsi</label>
+                    <input type="text" id="txDesc" class="form-control" placeholder="Contoh: Makan Malam" required>
+                </div>
+                <div class="form-group">
+                    <label>Kategori</label>
+                    <select id="txCat" class="form-control">
+                        <option value="Food & Drink">Food & Drink</option>
+                        <option value="Salary">Salary</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Utilities">Utilities</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Jenis</label>
+                    <select id="txType" class="form-control">
+                        <option value="Deposit">Deposit (Masuk)</option>
+                        <option value="Expense">Expense (Keluar)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Jumlah (RM)</label>
+                    <input type="number" id="txAmount" class="form-control" step="0.01" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-action" onclick="tutupModal()">CANCEL</button>
+                    <button type="submit" class="btn-new-tx">SAVE CHANGES</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let db = JSON.parse(localStorage.getItem('monarch_db_v2')) || [
+            { date: '2026-02-19', desc: 'Makan di Mamak', cat: 'Food & Drink', type: 'Expense', amount: 15.50 },
+            { date: '2026-02-28', desc: 'Gaji Bulan Ini', cat: 'Salary', type: 'Deposit', amount: 3500.00 },
+            { date: '2026-02-20', desc: 'Petrol Shell', cat: 'Transport', type: 'Expense', amount: 50.00 }
+        ];
+
+        function paparkanData(dataSuntikan = db) {
+            const tbody = document.getElementById('txTableBody');
+            tbody.innerHTML = '';
+            let totalIn = 0, totalOut = 0;
+
+            db.forEach(item => {
+                if(item.type === 'Deposit') totalIn += item.amount;
+                else totalOut += item.amount;
+            });
+
+            dataSuntikan.forEach((item) => {
+                let indexSebenar = db.indexOf(item);
+                let classCat = 'cat-food';
+                if(item.cat === 'Salary') classCat = 'cat-salary';
+                if(item.cat === 'Transport') classCat = 'cat-transport';
+                if(item.cat === 'Utilities') classCat = 'cat-utilities';
+
+                let dateParts = item.date.split('-');
+                let tarikhSesuai = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+
+                tbody.innerHTML += `<tr>
+                    <td>${tarikhSesuai}</td>
+                    <td>${item.desc}</td>
+                    <td><span class="badge-cat ${classCat}">${item.cat}</span></td>
+                    <td style="color:${item.type==='Deposit'?'#10b981':'#f43f5e'}">${item.type === 'Deposit' ? '➔ Masuk' : '➔ Keluar'}</td>
+                    <td>RM ${item.amount.toFixed(2)}</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn-action" onclick="editRow(${indexSebenar})">Edit</button>
+                            <button class="btn-action btn-delete" onclick="deleteRow(${indexSebenar})">Delete</button>
+                            <button class="btn-action" onclick="copyRow(${indexSebenar})">Copy</button>
+                        </div>
+                    </td>
+                </tr>`;
+            });
+
+            document.getElementById('lblIncome').innerText = `RM ${totalIn.toFixed(2)}`;
+            document.getElementById('lblExpense').innerText = `RM ${totalOut.toFixed(2)}`;
+            
+            let max = Math.max(totalIn, totalOut, 100);
+            document.getElementById('barIncome').style.height = `${(totalIn/max) * 100}px`;
+            document.getElementById('barExpense').style.height = `${(totalOut/max) * 100}px`;
+            
+            localStorage.setItem('monarch_db_v2', JSON.stringify(db));
+        }
+
+        function tapisData() {
+            let carian = document.getElementById('searchBox').value.toLowerCase();
+            let kat = document.getElementById('filterCategory').value;
+            let hasil = db.filter(item => (kat === 'All' || item.cat === kat) && item.desc.toLowerCase().includes(carian));
+            paparkanData(hasil);
+        }
+
+        function bukaModal() {
+            document.getElementById('txForm').reset();
+            document.getElementById('editIndex').value = '';
+            document.getElementById('modalTitle').innerText = "Tambah Transaksi";
+            let today = new Date().toISOString().split('T')[0];
+            document.getElementById('txDate').value = today;
+            document.getElementById('txModal').style.display = 'flex';
+        }
+        
+        function tutupModal() { document.getElementById('txModal').style.display = 'none'; }
+
+        document.getElementById('txForm').addEventListener('submit', function(e){
+            e.preventDefault();
+            let idx = document.getElementById('editIndex').value;
+            let dataBaru = {
+                date: document.getElementById('txDate').value,
+                desc: document.getElementById('txDesc').value,
+                cat: document.getElementById('txCat').value,
+                type: document.getElementById('txType').value,
+                amount: parseFloat(document.getElementById('txAmount').value)
+            };
+
+            if(idx === '') db.push(dataBaru);
+            else db[idx] = dataBaru;
+
+            tutupModal(); paparkanData();
+        });
+
+        function deleteRow(index) { if(confirm("Adakah anda pasti?")) { db.splice(index, 1); paparkanData(); } }
+        function copyRow(index) { let c = Object.assign({}, db[index]); c.desc += " (Salinan)"; db.push(c); paparkanData(); }
+        function editRow(index) {
+            let item = db[index];
+            document.getElementById('editIndex').value = index;
+            document.getElementById('txDate').value = item.date;
+            document.getElementById('txDesc').value = item.desc;
+            document.getElementById('txCat').value = item.cat;
+            document.getElementById('txType').value = item.type;
+            document.getElementById('txAmount').value = item.amount;
+            document.getElementById('modalTitle').innerText = "Kemaskini Transaksi";
+            document.getElementById('txModal').style.display = 'flex';
+        }
+
+        paparkanData();
+    </script>
+</body>
+</html>
