@@ -3,28 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monarch - Dashboard</title>
+    <title>Monarch - Dashboard Utama</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { display: flex; background-color: #240d1a; color: #ffffff; min-height: 100vh; }
         
         /* Sidebar */
-        .sidebar { width: 260px; background-color: #1a0a13; padding: 24px 16px; display: flex; flex-direction: column; gap: 30px; border-right: 1px solid #4c1d3b; position: fixed; height: 100vh; }
+        .sidebar { width: 260px; background-color: #1a0a13; padding: 24px 16px; display: flex; flex-direction: column; gap: 30px; border-right: 1px solid #4c1d3b; position: fixed; height: 100vh; z-index: 10; }
         .logo-container { display: flex; align-items: center; gap: 12px; padding-left: 8px; }
         .logo-box { background-color: #db2777; color: white; font-weight: bold; font-size: 20px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
-        .logo-text { font-size: 22px; font-weight: 700; letter-spacing: 0.5px; color: #fbcfe8; }
+        .logo-text { font-size: 22px; font-weight: 700; letter-spacing: 0.5px; color: #fbcfe8; text-transform: uppercase; }
         .nav-menu { display: flex; flex-direction: column; gap: 8px; list-style: none; }
         .nav-item { display: flex; align-items: center; gap: 16px; padding: 14px 16px; color: #f472b6; text-decoration: none; font-size: 16px; font-weight: 500; border-radius: 12px; cursor: pointer; transition: all 0.2s ease; }
         .nav-item:hover { color: #fff; background-color: rgba(219, 39, 119, 0.1); }
         .nav-item.active { color: #ffffff; background-color: #9d174d; }
 
         /* Main Content */
-        .main-content { margin-left: 260px; padding: 40px; width: calc(100% - 260px); }
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .btn-new-tx { background-color: #db2777; color: white; border: none; padding: 10px 20px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background 0.2s; }
-        .btn-new-tx:hover { background-color: #be185d; }
+        .main-content { margin-left: 260px; padding: 40px; width: calc(100% - 260px); display: flex; flex-direction: column; gap: 30px; }
         
-        .accounts-layout { display: grid; grid-template-columns: 1fr 280px; gap: 24px; }
+        /* Header Syarikat */
+        .company-header { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #1a0a13 0%, #2d1222 100%); padding: 24px; border-radius: 12px; border: 1px solid #4c1d3b; }
+        .company-info { display: flex; align-items: center; gap: 16px; }
+        .company-logo { background-color: #9d174d; color: white; width: 50px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; border: 2px solid #db2777; }
+        .company-name { font-size: 24px; font-weight: 700; color: #ffffff; }
+        .report-status { font-size: 14px; color: #f472b6; margin-top: 4px; }
+        .header-actions { display: flex; align-items: center; gap: 14px; }
+
+        /* Buttons */
+        .btn-new-tx { background-color: #db2777; color: white; border: none; padding: 12px 20px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background 0.2s; font-size: 14px; }
+        .btn-new-tx:hover { background-color: #be185d; }
+        .btn-view-report { background-color: transparent; color: #fbcfe8; border: 1px solid #db2777; padding: 12px 20px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: all 0.2s; text-decoration: none; font-size: 14px; display: inline-block; }
+        .btn-view-report:hover { background-color: #db2777; color: white; }
+
+        /* Ringkasan Prestasi & Carta Atas */
+        .performance-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+        .summary-panel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .metric-card { background-color: #1a0a13; border: 1px solid #4c1d3b; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; justify-content: center; }
+        .metric-title { font-size: 13px; color: #f472b6; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .metric-value { font-size: 22px; font-weight: 700; }
+
+        /* Mini Chart Card */
+        .mini-chart-card { background-color: #1a0a13; border: 1px solid #4c1d3b; border-radius: 12px; padding: 16px; text-align: center; display: flex; flex-direction: column; justify-content: space-between; }
+        .mini-chart-title { font-size: 13px; color: #f472b6; font-weight: 600; }
+        .chart-box { display: flex; justify-content: center; align-items: flex-end; gap: 20px; height: 90px; border-bottom: 2px solid #4c1d3b; padding-bottom: 4px; margin: 10px 0; }
+        .bar { width: 35px; border-radius: 4px 4px 0 0; transition: height 0.3s; }
+        .bar-income { background-color: #10b981; }
+        .bar-expense { background-color: #f43f5e; }
+        .bar-label { font-size: 10px; color: #f472b6; margin-top: 4px; }
+
+        /* Lower Layout (Table Area) */
         .data-panel { background-color: #1a0a13; border: 1px solid #4c1d3b; border-radius: 12px; padding: 20px; }
         .filter-bar { display: flex; gap: 12px; margin-bottom: 20px; }
         .search-input, .filter-select { padding: 10px 14px; background-color: #240d1a; border: 1px solid #4c1d3b; color: white; border-radius: 8px; outline: none; }
@@ -35,7 +62,7 @@
         th { padding: 12px 16px; color: #f472b6; font-size: 14px; border-bottom: 1px solid #4c1d3b; text-align: left; }
         td { padding: 14px 16px; font-size: 14px; border-bottom: 1px solid #240d1a; color: #fce7f3; }
         
-        /* Badges & Buttons */
+        /* Badges */
         .badge-cat { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
         .cat-food { background-color: rgba(234, 88, 12, 0.2); color: #fb923c; }
         .cat-salary { background-color: rgba(22, 163, 74, 0.2); color: #4ade80; }
@@ -47,14 +74,6 @@
         .btn-action:hover { color: white; background-color: #4c1d3b; }
         .btn-delete { color: #f43f5e; border-color: rgba(244, 63, 94, 0.4); }
         .btn-delete:hover { background-color: rgba(244, 63, 94, 0.2); color: #ff859b; }
-
-        /* Chart Side */
-        .chart-card { background-color: #1a0a13; border: 1px solid #4c1d3b; border-radius: 12px; padding: 20px; text-align: center; }
-        .chart-box { display: flex; justify-content: center; align-items: flex-end; gap: 24px; height: 120px; margin-top: 20px; border-bottom: 2px solid #4c1d3b; padding-bottom: 8px; }
-        .bar { width: 45px; border-radius: 4px 4px 0 0; transition: height 0.3s; }
-        .bar-income { background-color: #10b981; }
-        .bar-expense { background-color: #f43f5e; }
-        .bar-label { font-size: 11px; color: #f472b6; margin-top: 6px; }
 
         /* Modal */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 1000; }
@@ -82,58 +101,77 @@
     </div>
 
     <div class="main-content">
-        <div class="top-bar">
-            <h2>Akaun & Transaksi</h2>
-            <button class="btn-new-tx" onclick="bukaModal()">+ NEW TRANSACTION</button>
+        
+        <div class="company-header">
+            <div class="company-info">
+                <div class="company-logo">M</div>
+                <div>
+                    <div class="company-name">Monarch Holdings Sdn Bhd</div>
+                    <div class="report-status">Tahun Laporan Terkini: <b>2026</b></div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <a href="account.html" class="btn-view-report">📊 VIEW REPORT</a>
+                <button class="btn-new-tx" onclick="bukaModal()">+ NEW TRANSACTION</button>
+            </div>
         </div>
 
-        <div class="accounts-layout">
-            <div class="data-panel">
-                <div class="filter-bar">
-                    <input type="text" id="searchBox" class="search-input" placeholder="Cari transaksi..." oninput="tapisData()">
-                    <select id="filterCategory" class="filter-select" onchange="tapisData()">
-                        <option value="All">Semua Kategori</option>
-                        <option value="Salary">Salary</option>
-                        <option value="Food & Drink">Food & Drink</option>
-                        <option value="Transport">Transport</option>
-                        <option value="Utilities">Utilities</option>
-                    </select>
+        <div class="performance-grid">
+            <div class="summary-panel">
+                <div class="metric-card" style="border-left: 4px solid #10b981;">
+                    <div class="metric-title">Pendapatan (Masuk)</div>
+                    <div class="metric-value" id="lblIncome" style="color: #10b981;">RM 0.00</div>
                 </div>
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Description</th>
-                            <th>Category</th>
-                            <th>Type</th>
-                            <th>Amount</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="txTableBody"></tbody>
-                </table>
+                <div class="metric-card" style="border-left: 4px solid #f43f5e;">
+                    <div class="metric-title">Perbelanjaan (Keluar)</div>
+                    <div class="metric-value" id="lblExpense" style="color: #f43f5e;">RM 0.00</div>
+                </div>
+                <div class="metric-card" style="border-left: 4px solid #38bdf8;" id="netCard">
+                    <div class="metric-title">Aliran Tunai Bersih</div>
+                    <div class="metric-value" id="lblNet">RM 0.00</div>
+                </div>
             </div>
 
-            <div class="side-panel">
-                <div class="chart-card">
-                    <h4>Ringkasan Aliran</h4>
-                    <div class="chart-box">
-                        <div>
-                            <div id="barIncome" class="bar bar-income" style="height: 0px;"></div>
-                            <div class="bar-label">Income</div>
-                        </div>
-                        <div>
-                            <div id="barExpense" class="bar bar-expense" style="height: 0px;"></div>
-                            <div class="bar-label">Expenses</div>
-                        </div>
+            <div class="mini-chart-card">
+                <div class="mini-chart-title">Prestasi Aliran Teks</div>
+                <div class="chart-box">
+                    <div>
+                        <div id="barIncome" class="bar bar-income" style="height: 0px;"></div>
+                        <div class="bar-label">In</div>
                     </div>
-                    <div style="margin-top: 15px; text-align: left; font-size: 13px;">
-                        <p>🟢 Masuk: <b id="lblIncome" style="color:#10b981;">RM 0.00</b></p>
-                        <p>🔴 Keluar: <b id="lblExpense" style="color:#f43f5e;">RM 0.00</b></p>
+                    <div>
+                        <div id="barExpense" class="bar bar-expense" style="height: 0px;"></div>
+                        <div class="bar-label">Out</div>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="data-panel">
+            <div class="filter-bar">
+                <input type="text" id="searchBox" class="search-input" placeholder="Cari transaksi..." oninput="tapisData()">
+                <select id="filterCategory" class="filter-select" onchange="tapisData()">
+                    <option value="All">Semua Kategori</option>
+                    <option value="Salary">Salary</option>
+                    <option value="Food & Drink">Food & Drink</option>
+                    <option value="Transport">Transport</option>
+                    <option value="Utilities">Utilities</option>
+                </select>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="txTableBody"></tbody>
+            </table>
         </div>
     </div>
 
@@ -221,12 +259,19 @@
                 </tr>`;
             });
 
+            // Kemaskini Nilai Ringkasan Prestasi
             document.getElementById('lblIncome').innerText = `RM ${totalIn.toFixed(2)}`;
             document.getElementById('lblExpense').innerText = `RM ${totalOut.toFixed(2)}`;
             
+            let netCashflow = totalIn - totalOut;
+            const lblNet = document.getElementById('lblNet');
+            lblNet.innerText = `RM ${netCashflow.toFixed(2)}`;
+            lblNet.style.color = netCashflow >= 0 ? '#10b981' : '#f43f5e';
+
+            // Kemaskini Ketinggian Carta Ringkas (Max 80px)
             let max = Math.max(totalIn, totalOut, 100);
-            document.getElementById('barIncome').style.height = `${(totalIn/max) * 100}px`;
-            document.getElementById('barExpense').style.height = `${(totalOut/max) * 100}px`;
+            document.getElementById('barIncome').style.height = `${(totalIn/max) * 80}px`;
+            document.getElementById('barExpense').style.height = `${(totalOut/max) * 80}px`;
             
             localStorage.setItem('monarch_db_v2', JSON.stringify(db));
         }
