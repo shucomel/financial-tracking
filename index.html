@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cik Ita Yummy Blended - Dashboard</title>
+    <title>Cik Ita Yammy Station - Dashboard</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { display: flex; background-color: #fff5f8; color: #2d1222; min-height: 100vh; }
@@ -12,7 +12,7 @@
         .sidebar { width: 260px; background-color: #ffffff; padding: 24px 16px; display: flex; flex-direction: column; gap: 30px; border-right: 1px solid #fbcfe8; position: fixed; height: 100vh; }
         .logo-container { display: flex; align-items: center; gap: 12px; padding-left: 8px; }
         .logo-box { background-color: #db2777; color: white; font-weight: bold; font-size: 20px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px; flex-shrink: 0; }
-        .logo-text { font-size: 16px; font-weight: 700; color: #db2777; text-transform: uppercase; line-height: 1.2; }
+        .logo-text { font-size: 15px; font-weight: 700; color: #db2777; text-transform: uppercase; line-height: 1.2; }
         .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 8px; }
         .nav-item { display: flex; align-items: center; gap: 16px; padding: 14px 16px; color: #be185d; text-decoration: none; font-size: 16px; font-weight: 500; border-radius: 12px; }
         .nav-item.active { color: #ffffff; background-color: #db2777; }
@@ -25,7 +25,8 @@
         .company-info { display: flex; align-items: center; gap: 16px; }
         .company-logo { background-color: #db2777; color: white; width: 50px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; flex-shrink: 0; }
         .company-name { font-size: 24px; font-weight: 700; color: #2d1222; }
-        .report-status { font-size: 14px; color: #be185d; margin-top: 4px; }
+        .company-slogan { font-size: 13px; color: #db2777; font-style: italic; margin-top: 20px; font-weight: 500; }
+        .report-status { font-size: 12px; color: #be185d; margin-top: 4px; }
         
         /* Butang Kawalan */
         .btn-new-tx { background-color: #db2777; color: white; border: none; padding: 12px 20px; font-weight: 600; border-radius: 8px; cursor: pointer; font-size: 14px; }
@@ -79,10 +80,11 @@
 </head>
 <body>
 
+    <!-- Sidebar Menu (Nama Dikemaskini) -->
     <div class="sidebar">
         <div class="logo-container">
             <div class="logo-box">C</div>
-            <span class="logo-text">Cik Ita<br>Yummy Blended</span>
+            <span class="logo-text">Cik Ita<br>Yammy Station</span>
         </div>
         <ul class="nav-menu">
             <li><a href="index.html" class="nav-item active">🏠 Dashboard</a></li>
@@ -91,13 +93,16 @@
         </ul>
     </div>
 
+    <!-- Ruang Kandungan Utama -->
     <div class="main-content">
         
+        <!-- Header Syarikat (Nama & Slogan Dikemaskini) -->
         <div class="company-header">
             <div class="company-info">
                 <div class="company-logo">C</div>
                 <div>
-                    <div class="company-name">Cik Ita Yummy Blended</div>
+                    <div class="company-name">Cik Ita Yammy Station</div>
+                    <div class="company-slogan">"Slurpp..yammy sedapnya =)"</div>
                     <div class="report-status">Tahun Laporan Terkini: <b>2026</b></div>
                 </div>
             </div>
@@ -107,6 +112,7 @@
             </div>
         </div>
 
+        <!-- Kad Prestasi Ringkas & Carta -->
         <div class="performance-grid">
             <div class="summary-panel">
                 <div class="metric-card" style="border-left: 4px solid #10b981;">
@@ -123,6 +129,7 @@
                 </div>
             </div>
 
+            <!-- Komponen Carta Bar -->
             <div class="mini-chart-card">
                 <div style="font-size: 13px; color:#be185d; font-weight:600;">Prestasi Aliran</div>
                 <div class="chart-box">
@@ -138,6 +145,7 @@
             </div>
         </div>
 
+        <!-- Jadual Saringan Data -->
         <div class="data-panel">
             <div class="filter-bar">
                 <input type="text" id="searchBox" class="search-input" placeholder="Cari transaksi..." oninput="tapisData()">
@@ -166,6 +174,7 @@
         </div>
     </div>
 
+    <!-- Borang Tetingkap (Modal Pop-up) -->
     <div id="txModal" class="modal">
         <div class="modal-content">
             <h3 id="modalTitle">Tambah Transaksi</h3><br>
@@ -207,11 +216,12 @@
         </div>
     </div>
 
+    <!-- JavaScript Logik Sistem Semak & Proses -->
     <script>
         var KUNCI_DATA = 'monarch_final_v3';
 
         var db = JSON.parse(localStorage.getItem(KUNCI_DATA)) || [
-            { date: '2026-07-07', desc: 'Jualan Air Blended Coklat', cat: 'Food & Drink', type: 'Deposit', amount: 450.00 },
+            { date: '2026-07-07', desc: 'Jualan Air Ice Blended', cat: 'Food & Drink', type: 'Deposit', amount: 450.00 },
             { date: '2026-07-07', desc: 'Beli Ais & Susu Pekat', cat: 'Food & Drink', type: 'Expense', amount: 85.00 },
             { date: '2026-07-07', desc: 'Sewa Tapak Kedai', cat: 'Utilities', type: 'Expense', amount: 150.00 }
         ];
