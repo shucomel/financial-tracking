@@ -57,12 +57,14 @@
         th { padding: 12px 16px; color: #db2777; font-size: 14px; border-bottom: 1px solid #fbcfe8; text-align: left; }
         td { padding: 14px 16px; font-size: 14px; border-bottom: 1px solid #fff5f8; color: #2d1222; }
         
-        /* Lencana Kategori */
-        .badge-cat { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        /* Lencana Kategori (Ditambah Asset & Belanja) */
+        .badge-cat { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; }
         .cat-food { background-color: rgba(234, 88, 12, 0.15); color: #ea580c; }
         .cat-salary { background-color: rgba(22, 163, 74, 0.15); color: #16a34a; }
         .cat-transport { background-color: rgba(14, 165, 233, 0.15); color: #0ea5e9; }
         .cat-utilities { background-color: rgba(219, 39, 119, 0.15); color: #db2777; }
+        .cat-asset { background-color: rgba(109, 40, 217, 0.15); color: #6d28d9; } /* Ungu untuk Asset */
+        .cat-belanja { background-color: rgba(244, 63, 94, 0.15); color: #f43f5e; } /* Rose untuk Belanja */
         
         .action-btns { display: flex; gap: 6px; }
         .btn-action { padding: 4px 8px; font-size: 12px; background-color: #fff5f8; color: #db2777; border: 1px solid #fbcfe8; border-radius: 6px; cursor: pointer; }
@@ -79,7 +81,6 @@
 </head>
 <body>
 
-    <!-- Sidebar Menu -->
     <div class="sidebar">
         <div class="logo-container">
             <div class="logo-box">🥤</div>
@@ -92,10 +93,8 @@
         </ul>
     </div>
 
-    <!-- Ruang Kandungan Utama -->
     <div class="main-content">
         
-        <!-- Header Syarikat (Slogan Dibuang) -->
         <div class="company-header">
             <div class="company-info">
                 <div class="company-logo">🥤</div>
@@ -105,13 +104,11 @@
                 </div>
             </div>
             <div>
-                <!-- Pautan ditukar ke accounts.html supaya sepadan -->
                 <a href="accounts.html" class="btn-view-report">📊 VIEW REPORT</a>
                 <button class="btn-new-tx" onclick="bukaModal()">+ NEW TRANSACTION</button>
             </div>
         </div>
 
-        <!-- Kad Prestasi Ringkas & Carta -->
         <div class="performance-grid">
             <div class="summary-panel">
                 <div class="metric-card" style="border-left: 4px solid #10b981;">
@@ -128,7 +125,6 @@
                 </div>
             </div>
 
-            <!-- Komponen Carta Bar -->
             <div class="mini-chart-card">
                 <div style="font-size: 13px; color:#be185d; font-weight:600;">Prestasi Aliran</div>
                 <div class="chart-box">
@@ -144,14 +140,15 @@
             </div>
         </div>
 
-        <!-- Jadual Saringan Data -->
         <div class="data-panel">
             <div class="filter-bar">
                 <input type="text" id="searchBox" class="search-input" placeholder="Cari transaksi..." oninput="tapisData()">
                 <select id="filterCategory" class="filter-select" onchange="tapisData()">
                     <option value="All">Semua Kategori</option>
-                    <option value="Salary">Salary</option>
+                    <option value="Asset">Asset</option>
+                    <option value="Belanja">Belanja</option>
                     <option value="Food & Drink">Food & Drink</option>
+                    <option value="Salary">Salary</option>
                     <option value="Transport">Transport</option>
                     <option value="Utilities">Utilities</option>
                 </select>
@@ -173,7 +170,6 @@
         </div>
     </div>
 
-    <!-- Borang Tetingkap (Modal Pop-up) -->
     <div id="txModal" class="modal">
         <div class="modal-content">
             <h3 id="modalTitle">Tambah Transaksi</h3><br>
@@ -185,11 +181,13 @@
                 </div>
                 <div class="form-group">
                     <label>Deskripsi</label>
-                    <input type="text" id="txDesc" class="form-control" placeholder="Contoh: Makan Malam" required>
+                    <input type="text" id="txDesc" class="form-control" placeholder="Contoh: Jualan harian / Beli Blender" required>
                 </div>
                 <div class="form-group">
                     <label>Kategori</label>
                     <select id="txCat" class="form-control">
+                        <option value="Asset">Asset</option>
+                        <option value="Belanja">Belanja</option>
                         <option value="Food & Drink">Food & Drink</option>
                         <option value="Salary">Salary</option>
                         <option value="Transport">Transport</option>
@@ -215,14 +213,13 @@
         </div>
     </div>
 
-    <!-- JavaScript Logik Sistem Semak & Proses -->
     <script>
         var KUNCI_DATA = 'monarch_final_v3';
 
         var db = JSON.parse(localStorage.getItem(KUNCI_DATA)) || [
             { date: '2026-07-07', desc: 'Jualan Air Ice Blended', cat: 'Food & Drink', type: 'Deposit', amount: 450.00 },
-            { date: '2026-07-07', desc: 'Beli Ais & Susu Pekat', cat: 'Food & Drink', type: 'Expense', amount: 85.00 },
-            { date: '2026-07-07', desc: 'Sewa Tapak Kedai', cat: 'Utilities', type: 'Expense', amount: 150.00 }
+            { date: '2026-07-07', desc: 'Beli Mesin Blender Baharu', cat: 'Asset', type: 'Expense', amount: 350.00 },
+            { date: '2026-07-07', desc: 'Beli Ais & Susu Pekat', cat: 'Food & Drink', type: 'Expense', amount: 85.00 }
         ];
 
         function paparkanData(dataPaparan) {
@@ -252,6 +249,8 @@
                 if (item.cat === 'Salary') kelasKategori = 'cat-salary';
                 if (item.cat === 'Transport') kelasKategori = 'cat-transport';
                 if (item.cat === 'Utilities') kelasKategori = 'cat-utilities';
+                if (item.cat === 'Asset') kelasKategori = 'cat-asset';
+                if (item.cat === 'Belanja') kelasKategori = 'cat-belanja';
 
                 tbody.innerHTML += '<tr>' +
                     '<td>' + item.date + '</td>' +
