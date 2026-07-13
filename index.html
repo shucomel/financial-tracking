@@ -3,129 +3,355 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil Syarikat | Nama Syarikat Anda</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Cik Ita Yammy Station - Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { display: flex; background-color: #fff5f8; color: #2d1222; min-height: 100vh; }
+        
+        /* Sidebar Menu Pink-Putih */
+        .sidebar { width: 260px; background-color: #ffffff; padding: 24px 16px; display: flex; flex-direction: column; gap: 30px; border-right: 1px solid #fbcfe8; position: fixed; height: 100vh; }
+        .logo-container { display: flex; align-items: center; gap: 12px; padding-left: 8px; }
+        .logo-box { background-color: #701a75; font-size: 24px; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0; }
+        .logo-text { font-size: 15px; font-weight: 700; color: #db2777; text-transform: uppercase; line-height: 1.2; }
+        .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+        .nav-item { display: flex; align-items: center; gap: 16px; padding: 14px 16px; color: #be185d; text-decoration: none; font-size: 16px; font-weight: 500; border-radius: 12px; }
+        .nav-item.active { color: #ffffff; background-color: #db2777; }
+
+        /* Main Content Panel */
+        .main-content { margin-left: 260px; padding: 40px; width: calc(100% - 260px); display: flex; flex-direction: column; gap: 24px; }
+        
+        /* Maklumat Syarikat */
+        .company-header { display: flex; justify-content: space-between; align-items: center; background: #ffffff; padding: 24px; border-radius: 12px; border: 1px solid #fbcfe8; }
+        .company-info { display: flex; align-items: center; gap: 16px; }
+        .company-logo { background-color: #701a75; width: 56px; height: 56px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0; }
+        .company-name { font-size: 24px; font-weight: 700; color: #2d1222; }
+        .report-status { font-size: 13px; color: #be185d; margin-top: 4px; }
+        
+        /* Butang Kawalan */
+        .btn-new-tx { background-color: #db2777; color: white; border: none; padding: 12px 20px; font-weight: 600; border-radius: 8px; cursor: pointer; font-size: 14px; }
+        .btn-view-report { background-color: transparent; color: #db2777; border: 1px solid #db2777; padding: 12px 20px; font-weight: 600; border-radius: 8px; cursor: pointer; text-decoration: none; font-size: 14px; display: inline-block; }
+
+        /* Ringkasan & Carta Box */
+        .performance-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+        .summary-panel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .metric-card { background-color: #ffffff; border: 1px solid #fbcfe8; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; justify-content: center; }
+        .metric-title { font-size: 13px; color: #be185d; text-transform: uppercase; margin-bottom: 8px; }
+        .metric-value { font-size: 22px; font-weight: 700; }
+
+        /* Mini Carta Bar */
+        .mini-chart-card { background-color: #ffffff; border: 1px solid #fbcfe8; border-radius: 12px; padding: 16px; text-align: center; }
+        .chart-box { display: flex; justify-content: center; align-items: flex-end; gap: 20px; height: 90px; border-bottom: 2px solid #fbcfe8; padding-bottom: 4px; margin: 10px 0; width: 100%; }
+        .bar { width: 35px; border-radius: 4px 4px 0 0; display: inline-block; min-height: 2px; }
+        .bar-income { background-color: #10b981; }
+        .bar-expense { background-color: #f43f5e; }
+        .bar-label { font-size: 10px; color: #be185d; margin-top: 4px; }
+
+        /* Panel Jadual */
+        .data-panel { background-color: #ffffff; border: 1px solid #fbcfe8; border-radius: 12px; padding: 20px; }
+        .filter-bar { display: flex; gap: 12px; margin-bottom: 20px; }
+        .search-input, .filter-select { padding: 10px 14px; background-color: #fff5f8; border: 1px solid #fbcfe8; color: #2d1222; border-radius: 8px; outline: none; }
+        .search-input { flex: 1; }
+
+        /* Reka Bentuk Jadual */
+        table { width: 100%; border-collapse: collapse; }
+        th { padding: 12px 16px; color: #db2777; font-size: 14px; border-bottom: 1px solid #fbcfe8; text-align: left; }
+        td { padding: 14px 16px; font-size: 14px; border-bottom: 1px solid #fff5f8; color: #2d1222; }
+        
+        /* Lencana Kategori (Ditambah Asset & Belanja) */
+        .badge-cat { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; }
+        .cat-food { background-color: rgba(234, 88, 12, 0.15); color: #ea580c; }
+        .cat-salary { background-color: rgba(22, 163, 74, 0.15); color: #16a34a; }
+        .cat-transport { background-color: rgba(14, 165, 233, 0.15); color: #0ea5e9; }
+        .cat-utilities { background-color: rgba(219, 39, 119, 0.15); color: #db2777; }
+        .cat-asset { background-color: rgba(109, 40, 217, 0.15); color: #6d28d9; } /* Ungu untuk Asset */
+        .cat-belanja { background-color: rgba(244, 63, 94, 0.15); color: #f43f5e; } /* Rose untuk Belanja */
+        
+        .action-btns { display: flex; gap: 6px; }
+        .btn-action { padding: 4px 8px; font-size: 12px; background-color: #fff5f8; color: #db2777; border: 1px solid #fbcfe8; border-radius: 6px; cursor: pointer; }
+        .btn-delete { color: #e11d48; border-color: rgba(225, 29, 72, 0.3); }
+
+        /* Modal Borang */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background-color: #ffffff; border: 1px solid #fbcfe8; padding: 24px; border-radius: 12px; width: 400px; }
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 13px; margin-bottom: 6px; color: #db2777; font-weight: 500; }
+        .form-control { width: 100%; padding: 10px; background-color: #fff5f8; border: 1px solid #fbcfe8; color: #2d1222; border-radius: 6px; }
+        .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+    </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+<body>
 
-    <nav class="bg-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold text-blue-600 tracking-wide">TECHMIND <span class="text-gray-900">SOLUTIONS</span></a>
-            <div class="hidden md:flex space-x-8 font-medium">
-                <a href="#utama" class="hover:text-blue-600 transition">Utama</a>
-                <a href="#tentang" class="hover:text-blue-600 transition">Tentang Kami</a>
-                <a href="#perkhidmatan" class="hover:text-blue-600 transition">Perkhidmatan</a>
-                <a href="#hubungi" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Hubungi Kami</a>
-            </div>
+    <div class="sidebar">
+        <div class="logo-container">
+            <div class="logo-box">🥤</div>
+            <span class="logo-text">Cik Ita<br>Yammy Station</span>
         </div>
-    </nav>
+        <ul class="nav-menu">
+            <li><a href="index.html" class="nav-item active">🏠 Dashboard</a></li>
+            <li><a href="accounts.html" class="nav-item">💰 Accounts</a></li>
+            <li><a href="cashflow.html" class="nav-item">📊 Cash Flow</a></li>
+        </ul>
+    </div>
 
-    <header id="utama" class="bg-gradient-to-r from-blue-900 to-indigo-800 text-white py-24 px-6 text-center md:text-left">
-        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+    <div class="main-content">
+        
+        <div class="company-header">
+            <div class="company-info">
+                <div class="company-logo">🥤</div>
+                <div>
+                    <div class="company-name">Cik Ita Yammy Station</div>
+                    <div class="report-status">Tahun Laporan Terkini: <b>2026</b></div>
+                </div>
+            </div>
             <div>
-                <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
-                    Memacu Transformasi Digital Perniagaan Anda
-                </h1>
-                <p class="text-lg md:text-xl text-blue-100 mb-8">
-                    Kami menyediakan solusi teknologi bertaraf dunia untuk membantu perniagaan anda berkembang lebih cepat, cekap, dan selamat.
-                </p>
-                <div class="space-x-4">
-                    <a href="#perkhidmatan" class="bg-white text-blue-900 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition shadow-lg">Eksplorasi Servis</a>
-                    <a href="#tentang" class="border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition">Ketahui Lanjut</a>
-                </div>
-            </div>
-            <div class="hidden md:block">
-                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" alt="Corporate" class="rounded-xl shadow-2xl">
+                <a href="accounts.html" class="btn-view-report">📊 VIEW REPORT</a>
+                <button class="btn-new-tx" onclick="bukaModal()">+ NEW TRANSACTION</button>
             </div>
         </div>
-    </header>
 
-    <section id="tentang" class="py-20 px-6 max-w-7xl mx-auto">
-        <div class="text-center max-w-3xl mx-auto mb-16">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">Tentang Kami</h2>
-            <p class="text-gray-600 text-lg">Ditubuhkan pada tahun 2020, kami telah membantu lebih 100 buah syarikat tempatan dan antarabangsa dalam membina sistem digital yang utuh.</p>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-8">
-            <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
-                    <span class="text-2xl text-blue-600">🎯</span>
+        <div class="performance-grid">
+            <div class="summary-panel">
+                <div class="metric-card" style="border-left: 4px solid #10b981;">
+                    <div class="metric-title">Pendapatan (Masuk)</div>
+                    <div class="metric-value" id="lblIncome" style="color: #10b981;">RM 0.00</div>
                 </div>
-                <h3 class="text-xl font-bold mb-3">Misi Kami</h3>
-                <p class="text-gray-600">Menyampaikan inovasi teknologi yang mudah diakses dan memberikan impak maksima kepada operasi harian pelanggan kami.</p>
-            </div>
-            <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-                <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-6">
-                    <span class="text-2xl text-indigo-600">👁️‍🗨️</span>
+                <div class="metric-card" style="border-left: 4px solid #f43f5e;">
+                    <div class="metric-title">Perbelanjaan (Keluar)</div>
+                    <div class="metric-value" id="lblExpense" style="color: #f43f5e;">RM 0.00</div>
                 </div>
-                <h3 class="text-xl font-bold mb-3">Visi Kami</h3>
-                <p class="text-gray-600">Menjadi peneraju utama dalam penyediaan solusi digital bersepadu di Asia Tenggara menjelang tahun 2030.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="perkhidmatan" class="bg-gray-100 py-20 px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Perkhidmatan Kami</h2>
-                <p class="text-gray-600 text-lg">Kepakaran kami fokus kepada kualiti, keselamatan data, dan kepuasan pengguna.</p>
+                <div class="metric-card" style="border-left: 4px solid #0ea5e9;">
+                    <div class="metric-title">Aliran Tunai Bersih</div>
+                    <div class="metric-value" id="lblNet">RM 0.00</div>
+                </div>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition">
-                    <div class="text-4xl mb-4">🌐</div>
-                    <h3 class="text-xl font-bold mb-2">Pembangunan Web</h3>
-                    <p class="text-gray-600">Laman web korporat dan e-dagang yang pantas, mesra SEO, dan berorientasikan jualan.</p>
-                </div>
-                <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition">
-                    <div class="text-4xl mb-4">📱</div>
-                    <h3 class="text-xl font-bold mb-2">Aplikasi Mobil</h3>
-                    <p class="text-gray-600">Membangunkan aplikasi iOS & Android yang lancar dengan reka bentuk UI/UX yang memikat.</p>
-                </div>
-                <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition">
-                    <div class="text-4xl mb-4">☁️</div>
-                    <h3 class="text-xl font-bold mb-2">Solusi Awan (Cloud)</h3>
-                    <p class="text-gray-600">Migrasi data dan pengurusan server awan yang selamat untuk kelangsungan perniagaan tanpa henti.</p>
+            <div class="mini-chart-card">
+                <div style="font-size: 13px; color:#be185d; font-weight:600;">Prestasi Aliran</div>
+                <div class="chart-box">
+                    <div style="text-align: center;">
+                        <div id="barIncome" class="bar bar-income" style="height: 10px;"></div>
+                        <div class="bar-label">In</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div id="barExpense" class="bar bar-expense" style="height: 10px;"></div>
+                        <div class="bar-label">Out</div>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <section id="hubungi" class="py-20 px-6 max-w-7xl mx-auto">
-        <div class="bg-blue-900 text-white rounded-2xl p-8 md:p-12 grid md:grid-cols-2 gap-12 items-center">
-            <div>
-                <h2 class="text-3xl font-bold mb-4">Jom Bina Sesuatu yang Hebat Bersama!</h2>
-                <p class="text-blue-200 mb-8">Ada sebarang projek atau soalan? Hubungi pasukan pakar kami hari ini untuk sesi konsultasi percuma.</p>
-                <div class="space-y-4">
-                    <p class="flex items-center"><span class="mr-3">📍</span> No 12-3, Jalan Teknologi, Kuala Lumpur</p>
-                    <p class="flex items-center"><span class="mr-3">📞</span> +603-8888 9999</p>
-                    <p class="flex items-center"><span class="mr-3">✉️</span> info@techmind.com</p>
-                </div>
+        <div class="data-panel">
+            <div class="filter-bar">
+                <input type="text" id="searchBox" class="search-input" placeholder="Cari transaksi..." oninput="tapisData()">
+                <select id="filterCategory" class="filter-select" onchange="tapisData()">
+                    <option value="All">Semua Kategori</option>
+                    <option value="Asset">Asset</option>
+                    <option value="Belanja">Belanja</option>
+                    <option value="Food & Drink">Food & Drink</option>
+                    <option value="Salary">Salary</option>
+                    <option value="Transport">Transport</option>
+                    <option value="Utilities">Utilities</option>
+                </select>
             </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="txTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="txModal" class="modal">
+        <div class="modal-content">
+            <h3 id="modalTitle">Tambah Transaksi</h3><br>
+            <form id="txForm">
+                <input type="hidden" id="editIndex">
+                <div class="form-group">
+                    <label>Tarikh</label>
+                    <input type="date" id="txDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Deskripsi</label>
+                    <input type="text" id="txDesc" class="form-control" placeholder="Contoh: Jualan harian / Beli Blender" required>
+                </div>
+                <div class="form-group">
+                    <label>Kategori</label>
+                    <select id="txCat" class="form-control">
+                        <option value="Asset">Asset</option>
+                        <option value="Belanja">Belanja</option>
+                        <option value="Food & Drink">Food & Drink</option>
+                        <option value="Salary">Salary</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Utilities">Utilities</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Jenis</label>
+                    <select id="txType" class="form-control">
+                        <option value="Deposit">Deposit (Masuk)</option>
+                        <option value="Expense">Expense (Keluar)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Jumlah (RM)</label>
+                    <input type="number" id="txAmount" class="form-control" step="0.01" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-action" onclick="tutupModal()">CANCEL</button>
+                    <button type="submit" class="btn-new-tx">SAVE CHANGES</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        var KUNCI_DATA = 'monarch_final_v3';
+
+        var db = JSON.parse(localStorage.getItem(KUNCI_DATA)) || [
+            { date: '2026-07-07', desc: 'Jualan Air Ice Blended', cat: 'Food & Drink', type: 'Deposit', amount: 450.00 },
+            { date: '2026-07-07', desc: 'Beli Mesin Blender Baharu', cat: 'Asset', type: 'Expense', amount: 350.00 },
+            { date: '2026-07-07', desc: 'Beli Ais & Susu Pekat', cat: 'Food & Drink', type: 'Expense', amount: 85.00 }
+        ];
+
+        function paparkanData(dataPaparan) {
+            var senarai = dataPaparan || db;
+            var tbody = document.getElementById('txTableBody');
+            if (!tbody) return;
             
-            <div class="bg-white text-gray-800 p-8 rounded-xl shadow-lg">
-                <form action="#" method="POST" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-semibold mb-1">Nama Anda</label>
-                        <input type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-blue-600" placeholder="Ali bin Abu">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold mb-1">Emel</label>
-                        <input type="email" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-blue-600" placeholder="ali@gmail.com">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold mb-1">Mesej</label>
-                        <textarea class="w-full p-3 border border-gray-300 rounded-lg focus:outline-blue-600 h-24" placeholder="Bagaimana kami boleh bantu anda?"></textarea>
-                    </div>
-                    <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition">Hantar Mesej</button>
-                </form>
-            </div>
-        </div>
-    </section>
+            tbody.innerHTML = '';
+            var totalIn = 0;
+            var totalOut = 0;
 
-    <footer class="bg-gray-900 text-gray-400 py-8 text-center border-t border-gray-800">
-        <p>&copy; 2026 TechMind Solutions. Hak Cipta Terpelihara.</p>
-    </footer>
+            for (var i = 0; i < db.length; i++) {
+                if (db[i].type === 'Deposit') {
+                    totalIn += db[i].amount;
+                } else {
+                    totalOut += db[i].amount;
+                }
+            }
 
+            for (var j = 0; j < senarai.length; j++) {
+                var item = senarai[j];
+                var indexAsal = db.indexOf(item);
+                var warnaJenis = item.type === 'Deposit' ? '#10b981' : '#f43f5e';
+                var teksJenis = item.type === 'Deposit' ? '➔ Masuk' : '➔ Keluar';
+                
+                var kelasKategori = 'cat-food';
+                if (item.cat === 'Salary') kelasKategori = 'cat-salary';
+                if (item.cat === 'Transport') kelasKategori = 'cat-transport';
+                if (item.cat === 'Utilities') kelasKategori = 'cat-utilities';
+                if (item.cat === 'Asset') kelasKategori = 'cat-asset';
+                if (item.cat === 'Belanja') kelasKategori = 'cat-belanja';
+
+                tbody.innerHTML += '<tr>' +
+                    '<td>' + item.date + '</td>' +
+                    '<td>' + item.desc + '</td>' +
+                    '<td><span class="badge-cat ' + kelasKategori + '">' + item.cat + '</span></td>' +
+                    '<td style="color:' + warnaJenis + '">' + teksJenis + '</td>' +
+                    '<td>RM ' + item.amount.toFixed(2) + '</td>' +
+                    '<td>' +
+                        '<div class="action-btns">' +
+                            '<button class="btn-action" onclick="editRow(' + indexAsal + ')">Edit</button>' +
+                            '<button class="btn-action btn-delete" onclick="deleteRow(' + indexAsal + ')">Delete</button>' +
+                        '</div>' +
+                    '</td>' +
+                '</tr>';
+            }
+
+            document.getElementById('lblIncome').innerText = 'RM ' + totalIn.toFixed(2);
+            document.getElementById('lblExpense').innerText = 'RM ' + totalOut.toFixed(2);
+            
+            var bakiBersih = totalIn - totalOut;
+            var lblNet = document.getElementById('lblNet');
+            lblNet.innerText = 'RM ' + bakiBersih.toFixed(2);
+            lblNet.style.color = bakiBersih >= 0 ? '#10b981' : '#f43f5e';
+
+            var nilaiMaksimum = Math.max(totalIn, totalOut, 100);
+            document.getElementById('barIncome').style.height = ((totalIn / nilaiMaksimum) * 80) + 'px';
+            document.getElementById('barExpense').style.height = ((totalOut / nilaiMaksimum) * 80) + 'px';
+            
+            localStorage.setItem(KUNCI_DATA, JSON.stringify(db));
+        }
+
+        function tapisData() {
+            var kataKunci = document.getElementById('searchBox').value.toLowerCase();
+            var kategoriDipilih = document.getElementById('filterCategory').value;
+            
+            var hasilTapis = [];
+            for (var i = 0; i < db.length; i++) {
+                var padanKategori = (kategoriDipilih === 'All' || db[i].cat === kategoriDipilih);
+                var padanCarian = db[i].desc.toLowerCase().indexOf(kataKunci) !== -1;
+                if (padanKategori && padanCarian) {
+                    hasilTapis.push(db[i]);
+                }
+            }
+            paparkanData(hasilTapis);
+        }
+
+        function bukaModal() {
+            document.getElementById('txForm').reset();
+            document.getElementById('editIndex').value = '';
+            document.getElementById('modalTitle').innerText = "Tambah Transaksi";
+            document.getElementById('txDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('txModal').style.display = 'flex';
+        }
+        
+        function tutupModal() { 
+            document.getElementById('txModal').style.display = 'none'; 
+        }
+
+        document.getElementById('txForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var indexEdit = document.getElementById('editIndex').value;
+            var objekBaru = {
+                date: document.getElementById('txDate').value,
+                desc: document.getElementById('txDesc').value,
+                cat: document.getElementById('txCat').value,
+                type: document.getElementById('txType').value,
+                amount: parseFloat(document.getElementById('txAmount').value)
+            };
+
+            if (indexEdit === '') {
+                db.push(objekBaru);
+            } else {
+                db[indexEdit] = objekBaru;
+            }
+
+            tutupModal(); 
+            paparkanData();
+        });
+
+        function deleteRow(index) { 
+            if (confirm("Adakah anda pasti mahu memadam data ini?")) { 
+                db.splice(index, 1); 
+                paparkanData(); 
+            } 
+        }
+
+        function editRow(index) {
+            var sasaran = db[index];
+            document.getElementById('editIndex').value = index;
+            document.getElementById('txDate').value = sasaran.date;
+            document.getElementById('txDesc').value = sasaran.desc;
+            document.getElementById('txCat').value = sasaran.cat;
+            document.getElementById('txType').value = sasaran.type;
+            document.getElementById('txAmount').value = sasaran.amount;
+            document.getElementById('modalTitle').innerText = "Kemaskini Transaksi";
+            document.getElementById('txModal').style.display = 'flex';
+        }
+
+        window.onload = function() {
+            paparkanData();
+        };
+    </script>
 </body>
 </html>
