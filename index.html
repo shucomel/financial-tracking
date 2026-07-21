@@ -165,7 +165,14 @@
         .metric-card.net::before { background-color: #0ea5e9; }
 
         .metric-title { font-size: 12px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 8px; }
-        .metric-value { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
+        
+        /* DIPINDAHKAN KELUAR: Memastikan RM dan nombor sentiasa selari dalam 1 baris */
+        .metric-value { 
+            font-size: 22px; 
+            font-weight: 800; 
+            letter-spacing: -0.5px; 
+            white-space: nowrap; 
+        }
 
         /* Mini Chart Card */
         .mini-chart-card { 
