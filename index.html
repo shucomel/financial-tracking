@@ -4,98 +4,341 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cik Ita Yammy Station - Dashboard</title>
+    <!-- Google Font: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { display: flex; background-color: #fff5f8; color: #2d1222; min-height: 100vh; }
-        
-        /* Sidebar Menu Pink-Putih */
-        .sidebar { width: 260px; background-color: #ffffff; padding: 24px 16px; display: flex; flex-direction: column; gap: 30px; border-right: 1px solid #fbcfe8; position: fixed; height: 100vh; }
-        .logo-container { display: flex; align-items: center; gap: 12px; padding-left: 8px; }
-        .logo-box { background-color: #701a75; font-size: 24px; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0; }
-        .logo-text { font-size: 15px; font-weight: 700; color: #db2777; text-transform: uppercase; line-height: 1.2; }
-        .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-        .nav-item { display: flex; align-items: center; gap: 16px; padding: 14px 16px; color: #be185d; text-decoration: none; font-size: 16px; font-weight: 500; border-radius: 12px; }
-        .nav-item.active { color: #ffffff; background-color: #db2777; }
+        :root {
+            --primary: #db2777;
+            --primary-hover: #be185d;
+            --primary-light: #fdf2f8;
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --border-pink: #fbcfe8;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
 
-        /* Main Content Panel */
-        .main-content { margin-left: 260px; padding: 40px; width: calc(100% - 260px); display: flex; flex-direction: column; gap: 24px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { display: flex; background-color: var(--bg-main); color: var(--text-main); min-height: 100vh; -webkit-font-smoothing: antialiased; }
         
-        /* Maklumat Syarikat */
-        .company-header { display: flex; justify-content: space-between; align-items: center; background: #ffffff; padding: 24px; border-radius: 12px; border: 1px solid #fbcfe8; }
+        /* Navigation Sidebar */
+        .sidebar { 
+            width: 270px; 
+            background-color: var(--bg-card); 
+            padding: 28px 20px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 32px; 
+            border-right: 1px solid var(--border); 
+            position: fixed; 
+            height: 100vh; 
+            z-index: 10;
+        }
+        .logo-container { display: flex; align-items: center; gap: 12px; padding: 0 4px; }
+        .logo-box { 
+            background: linear-gradient(135deg, #be185d 0%, #db2777 100%); 
+            color: #ffffff; 
+            width: 44px; 
+            height: 44px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: var(--radius-md); 
+            flex-shrink: 0; 
+            box-shadow: 0 4px 12px rgba(219, 39, 119, 0.3);
+        }
+        .logo-text { font-size: 15px; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: -0.3px; line-height: 1.2; }
+        .logo-text span { color: var(--primary); }
+        
+        .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+        .nav-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            padding: 12px 16px; 
+            color: var(--text-muted); 
+            text-decoration: none; 
+            font-size: 14px; 
+            font-weight: 600; 
+            border-radius: var(--radius-md); 
+            transition: all 0.2s ease;
+        }
+        .nav-item:hover { color: var(--primary); background-color: var(--primary-light); }
+        .nav-item.active { color: #ffffff; background-color: var(--primary); box-shadow: 0 4px 12px rgba(219, 39, 119, 0.25); }
+        .nav-item svg { width: 18px; height: 18px; fill: currentColor; }
+
+        /* Main Area */
+        .main-content { margin-left: 270px; padding: 40px 48px; width: calc(100% - 270px); display: flex; flex-direction: column; gap: 28px; }
+        
+        /* Header Section */
+        .company-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background: var(--bg-card); 
+            padding: 24px 32px; 
+            border-radius: var(--radius-lg); 
+            border: 1px solid var(--border); 
+            box-shadow: var(--shadow-md);
+        }
         .company-info { display: flex; align-items: center; gap: 16px; }
-        .company-logo { background-color: #701a75; width: 56px; height: 56px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0; }
-        .company-name { font-size: 24px; font-weight: 700; color: #2d1222; }
-        .report-status { font-size: 13px; color: #be185d; margin-top: 4px; }
+        .company-logo { 
+            background-color: var(--primary-light); 
+            color: var(--primary);
+            width: 52px; 
+            height: 52px; 
+            border-radius: var(--radius-md); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 24px; 
+            flex-shrink: 0; 
+        }
+        .company-name { font-size: 20px; font-weight: 800; color: var(--text-main); letter-spacing: -0.3px; }
+        .report-status { font-size: 13px; color: var(--text-muted); margin-top: 2px; font-weight: 500; }
+        .report-status b { color: var(--primary); font-weight: 700; }
         
-        /* Butang Kawalan */
-        .btn-new-tx { background-color: #db2777; color: white; border: none; padding: 12px 20px; font-weight: 600; border-radius: 8px; cursor: pointer; font-size: 14px; }
-        .btn-view-report { background-color: transparent; color: #db2777; border: 1px solid #db2777; padding: 12px 20px; font-weight: 600; border-radius: 8px; cursor: pointer; text-decoration: none; font-size: 14px; display: inline-block; }
+        .header-actions { display: flex; gap: 12px; align-items: center; }
+        .btn-new-tx { 
+            background: linear-gradient(135deg, #db2777 0%, #be185d 100%); 
+            color: white; 
+            border: none; 
+            padding: 12px 22px; 
+            font-weight: 600; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            font-size: 14px; 
+            box-shadow: 0 4px 12px rgba(219, 39, 119, 0.25);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-new-tx:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(219, 39, 119, 0.35); }
+        
+        .btn-view-report { 
+            background-color: var(--bg-card); 
+            color: var(--text-main); 
+            border: 1px solid var(--border); 
+            padding: 12px 20px; 
+            font-weight: 600; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            text-decoration: none; 
+            font-size: 14px; 
+            transition: all 0.2s;
+        }
+        .btn-view-report:hover { background-color: var(--bg-main); border-color: #cbd5e1; }
 
-        /* Ringkasan & Carta Box */
-        .performance-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
-        .summary-panel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-        .metric-card { background-color: #ffffff; border: 1px solid #fbcfe8; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; justify-content: center; }
-        .metric-title { font-size: 13px; color: #be185d; text-transform: uppercase; margin-bottom: 8px; }
-        .metric-value { font-size: 22px; font-weight: 700; }
+        /* Metrics Grid */
+        .performance-grid { display: grid; grid-template-columns: 3fr 1fr; gap: 24px; }
+        .summary-panel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        
+        .metric-card { 
+            background-color: var(--bg-card); 
+            border: 1px solid var(--border); 
+            border-radius: var(--radius-lg); 
+            padding: 24px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+        }
+        .metric-card.income::before { background-color: #10b981; }
+        .metric-card.expense::before { background-color: #f43f5e; }
+        .metric-card.net::before { background-color: #0ea5e9; }
 
-        /* Mini Carta Bar */
-        .mini-chart-card { background-color: #ffffff; border: 1px solid #fbcfe8; border-radius: 12px; padding: 16px; text-align: center; }
-        .chart-box { display: flex; justify-content: center; align-items: flex-end; gap: 20px; height: 90px; border-bottom: 2px solid #fbcfe8; padding-bottom: 4px; margin: 10px 0; width: 100%; }
-        .bar { width: 35px; border-radius: 4px 4px 0 0; display: inline-block; min-height: 2px; }
-        .bar-income { background-color: #10b981; }
-        .bar-expense { background-color: #f43f5e; }
-        .bar-label { font-size: 10px; color: #be185d; margin-top: 4px; }
+        .metric-title { font-size: 12px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .metric-value { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
 
-        /* Panel Jadual */
-        .data-panel { background-color: #ffffff; border: 1px solid #fbcfe8; border-radius: 12px; padding: 20px; }
-        .filter-bar { display: flex; gap: 12px; margin-bottom: 20px; }
-        .search-input, .filter-select { padding: 10px 14px; background-color: #fff5f8; border: 1px solid #fbcfe8; color: #2d1222; border-radius: 8px; outline: none; }
+        /* Mini Chart Card */
+        .mini-chart-card { 
+            background-color: var(--bg-card); 
+            border: 1px solid var(--border); 
+            border-radius: var(--radius-lg); 
+            padding: 20px 24px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: var(--shadow-sm);
+        }
+        .chart-box { display: flex; justify-content: center; align-items: flex-end; gap: 28px; height: 80px; padding-bottom: 4px; margin-top: 12px; }
+        .bar { width: 32px; border-radius: 6px 6px 0 0; display: inline-block; transition: height 0.4s ease; }
+        .bar-income { background: linear-gradient(180deg, #34d399 0%, #10b981 100%); }
+        .bar-expense { background: linear-gradient(180deg, #fb7185 0%, #f43f5e 100%); }
+        .bar-label { font-size: 11px; font-weight: 700; color: var(--text-muted); margin-top: 6px; }
+
+        /* Data Panel (Table Container) */
+        .data-panel { 
+            background-color: var(--bg-card); 
+            border: 1px solid var(--border); 
+            border-radius: var(--radius-lg); 
+            padding: 24px; 
+            box-shadow: var(--shadow-md);
+        }
+        
+        .filter-bar { display: flex; gap: 12px; margin-bottom: 24px; }
+        .search-input, .filter-select { 
+            padding: 12px 16px; 
+            background-color: var(--bg-main); 
+            border: 1px solid var(--border); 
+            color: var(--text-main); 
+            border-radius: 10px; 
+            outline: none; 
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .search-input:focus, .filter-select:focus { border-color: var(--primary); background-color: #ffffff; box-shadow: 0 0 0 3px rgba(219, 39, 119, 0.1); }
         .search-input { flex: 1; }
 
-        /* Reka Bentuk Jadual */
-        table { width: 100%; border-collapse: collapse; }
-        th { padding: 12px 16px; color: #db2777; font-size: 14px; border-bottom: 1px solid #fbcfe8; text-align: left; }
-        td { padding: 14px 16px; font-size: 14px; border-bottom: 1px solid #fff5f8; color: #2d1222; }
+        /* Table Design */
+        table { width: 100%; border-collapse: separate; border-spacing: 0; }
+        th { 
+            padding: 14px 18px; 
+            color: var(--text-muted); 
+            font-size: 12px; 
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border); 
+            text-align: left; 
+            background-color: #fafafa;
+        }
+        th:first-child { border-top-left-radius: 8px; }
+        th:last-child { border-top-right-radius: 8px; }
         
-        /* Lencana Kategori */
-        .badge-cat { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; }
-        .cat-food { background-color: rgba(234, 88, 12, 0.15); color: #ea580c; }
-        .cat-salary { background-color: rgba(22, 163, 74, 0.15); color: #16a34a; }
-        .cat-transport { background-color: rgba(14, 165, 233, 0.15); color: #0ea5e9; }
-        .cat-utilities { background-color: rgba(219, 39, 119, 0.15); color: #db2777; }
-        .cat-asset { background-color: rgba(109, 40, 217, 0.15); color: #6d28d9; } /* Ungu untuk Asset */
-        .cat-belanja { background-color: rgba(244, 63, 94, 0.15); color: #f43f5e; } /* Rose untuk Belanja */
-        .cat-sewa { background-color: rgba(217, 119, 6, 0.15); color: #d97706; } /* Oren Amber untuk Sewa Tapak */
-        
-        .action-btns { display: flex; gap: 6px; }
-        .btn-action { padding: 4px 8px; font-size: 12px; background-color: #fff5f8; color: #db2777; border: 1px solid #fbcfe8; border-radius: 6px; cursor: pointer; }
-        .btn-delete { color: #e11d48; border-color: rgba(225, 29, 72, 0.3); }
+        td { 
+            padding: 16px 18px; 
+            font-size: 14px; 
+            font-weight: 500;
+            border-bottom: 1px solid var(--border); 
+            color: var(--text-main); 
+        }
+        tbody tr { transition: background-color 0.15s ease; }
+        tbody tr:hover { background-color: #f8fafc; }
+        tbody tr:last-child td { border-bottom: none; }
 
-        /* Modal Borang */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background-color: #ffffff; border: 1px solid #fbcfe8; padding: 24px; border-radius: 12px; width: 400px; }
-        .form-group { margin-bottom: 14px; }
-        .form-group label { display: block; font-size: 13px; margin-bottom: 6px; color: #db2777; font-weight: 500; }
-        .form-control { width: 100%; padding: 10px; background-color: #fff5f8; border: 1px solid #fbcfe8; color: #2d1222; border-radius: 6px; }
-        .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+        /* Modern Badges */
+        .badge-cat { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; }
+        .cat-food { background-color: #ffedd5; color: #c2410c; }
+        .cat-salary { background-color: #dcfce7; color: #15803d; }
+        .cat-transport { background-color: #e0f2fe; color: #0369a1; }
+        .cat-utilities { background-color: #fce7f3; color: #be185d; }
+        .cat-asset { background-color: #f3e8ff; color: #6b21a8; }
+        .cat-belanja { background-color: #ffe4e6; color: #be123c; }
+        .cat-sewa { background-color: #fef3c7; color: #b45309; }
+
+        .action-btns { display: flex; gap: 8px; }
+        .btn-action { 
+            padding: 6px 12px; 
+            font-size: 12px; 
+            font-weight: 600;
+            background-color: #ffffff; 
+            color: var(--text-main); 
+            border: 1px solid var(--border); 
+            border-radius: 6px; 
+            cursor: pointer; 
+            transition: all 0.2s;
+        }
+        .btn-action:hover { background-color: var(--bg-main); border-color: #cbd5e1; }
+        .btn-delete { color: #e11d48; border-color: #fecdd3; background-color: #fff1f2; }
+        .btn-delete:hover { background-color: #ffe4e6; border-color: #fda4af; }
+
+        /* Modal Styles */
+        .modal { 
+            display: none; 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            background-color: rgba(15, 23, 42, 0.4); 
+            backdrop-filter: blur(4px);
+            justify-content: center; 
+            align-items: center; 
+            z-index: 1000; 
+        }
+        .modal-content { 
+            background-color: #ffffff; 
+            border-radius: var(--radius-lg); 
+            padding: 32px; 
+            width: 440px; 
+            box-shadow: var(--shadow-lg);
+            animation: modalSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes modalSlideUp {
+            from { opacity: 0; transform: translateY(12px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .modal-header h3 { font-size: 18px; font-weight: 800; color: var(--text-main); margin-bottom: 20px; }
+        
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 13px; margin-bottom: 6px; color: var(--text-muted); font-weight: 600; }
+        .form-control { 
+            width: 100%; 
+            padding: 10px 14px; 
+            background-color: var(--bg-main); 
+            border: 1px solid var(--border); 
+            color: var(--text-main); 
+            border-radius: 8px; 
+            font-size: 14px;
+            outline: none;
+        }
+        .form-control:focus { border-color: var(--primary); background-color: #ffffff; }
+        .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; }
     </style>
 </head>
 <body>
 
+    <!-- Sidebar Navigation -->
     <div class="sidebar">
         <div class="logo-container">
-            <div class="logo-box">🥤</div>
-            <span class="logo-text">Cik Ita<br>Yammy Station</span>
+            <div class="logo-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+            </div>
+            <span class="logo-text">Cik Ita<br><span>Yammy Station</span></span>
         </div>
         <ul class="nav-menu">
-            <li><a href="index.html" class="nav-item active">🏠 Dashboard</a></li>
-            <li><a href="accounts.html" class="nav-item">💰 Accounts</a></li>
-            <li><a href="cashflow.html" class="nav-item">📊 Cash Flow</a></li>
+            <li>
+                <a href="index.html" class="nav-item active">
+                    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                    Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="accounts.html" class="nav-item">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                    Accounts
+                </a>
+            </li>
+            <li>
+                <a href="cashflow.html" class="nav-item">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                    Cash Flow
+                </a>
+            </li>
         </ul>
     </div>
 
+    <!-- Main Content Area -->
     <div class="main-content">
         
+        <!-- Header -->
         <div class="company-header">
             <div class="company-info">
                 <div class="company-logo">🥤</div>
@@ -104,46 +347,51 @@
                     <div class="report-status">Tahun Laporan Terkini: <b>2026</b></div>
                 </div>
             </div>
-            <div>
-                <a href="accounts.html" class="btn-view-report">📊 VIEW REPORT</a>
-                <button class="btn-new-tx" onclick="bukaModal()">+ NEW TRANSACTION</button>
+            <div class="header-actions">
+                <a href="accounts.html" class="btn-view-report">📊 Lihat Laporan</a>
+                <button class="btn-new-tx" onclick="bukaModal()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Transaksi Baru
+                </button>
             </div>
         </div>
 
+        <!-- Metrics Overview -->
         <div class="performance-grid">
             <div class="summary-panel">
-                <div class="metric-card" style="border-left: 4px solid #10b981;">
+                <div class="metric-card income">
                     <div class="metric-title">Pendapatan (Masuk)</div>
                     <div class="metric-value" id="lblIncome" style="color: #10b981;">RM 0.00</div>
                 </div>
-                <div class="metric-card" style="border-left: 4px solid #f43f5e;">
+                <div class="metric-card expense">
                     <div class="metric-title">Perbelanjaan (Keluar)</div>
                     <div class="metric-value" id="lblExpense" style="color: #f43f5e;">RM 0.00</div>
                 </div>
-                <div class="metric-card" style="border-left: 4px solid #0ea5e9;">
+                <div class="metric-card net">
                     <div class="metric-title">Aliran Tunai Bersih</div>
                     <div class="metric-value" id="lblNet">RM 0.00</div>
                 </div>
             </div>
 
             <div class="mini-chart-card">
-                <div style="font-size: 13px; color:#be185d; font-weight:600;">Prestasi Aliran</div>
+                <div style="font-size: 13px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Prestasi Aliran</div>
                 <div class="chart-box">
                     <div style="text-align: center;">
                         <div id="barIncome" class="bar bar-income" style="height: 10px;"></div>
-                        <div class="bar-label">In</div>
+                        <div class="bar-label">MASUK</div>
                     </div>
                     <div style="text-align: center;">
                         <div id="barExpense" class="bar bar-expense" style="height: 10px;"></div>
-                        <div class="bar-label">Out</div>
+                        <div class="bar-label">KELUAR</div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Transactions Table Panel -->
         <div class="data-panel">
             <div class="filter-bar">
-                <input type="text" id="searchBox" class="search-input" placeholder="Cari transaksi..." oninput="tapisData()">
+                <input type="text" id="searchBox" class="search-input" placeholder="🔍 Cari transaksi..." oninput="tapisData()">
                 <select id="filterCategory" class="filter-select" onchange="tapisData()">
                     <option value="All">Semua Kategori</option>
                     <option value="Asset">Asset</option>
@@ -159,12 +407,12 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Description</th>
-                        <th>Category</th>
-                        <th>Type</th>
-                        <th>Amount</th>
-                        <th>Actions</th>
+                        <th>Tarikh</th>
+                        <th>Deskripsi</th>
+                        <th>Kategori</th>
+                        <th>Jenis</th>
+                        <th>Jumlah</th>
+                        <th>Tindakan</th>
                     </tr>
                 </thead>
                 <tbody id="txTableBody"></tbody>
@@ -172,9 +420,12 @@
         </div>
     </div>
 
+    <!-- Modal Form -->
     <div id="txModal" class="modal">
         <div class="modal-content">
-            <h3 id="modalTitle">Tambah Transaksi</h3><br>
+            <div class="modal-header">
+                <h3 id="modalTitle">Tambah Transaksi</h3>
+            </div>
             <form id="txForm">
                 <input type="hidden" id="editIndex">
                 <div class="form-group">
@@ -183,7 +434,7 @@
                 </div>
                 <div class="form-group">
                     <label>Deskripsi</label>
-                    <input type="text" id="txDesc" class="form-control" placeholder="Contoh: Jualan harian / Sewa tapak bulanan" required>
+                    <input type="text" id="txDesc" class="form-control" placeholder="Contoh: Jualan harian / Sewa tapak" required>
                 </div>
                 <div class="form-group">
                     <label>Kategori</label>
@@ -198,7 +449,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Jenis</label>
+                    <label>Jenis Transaksi</label>
                     <select id="txType" class="form-control">
                         <option value="Deposit">Deposit (Masuk)</option>
                         <option value="Expense">Expense (Keluar)</option>
@@ -206,11 +457,11 @@
                 </div>
                 <div class="form-group">
                     <label>Jumlah (RM)</label>
-                    <input type="number" id="txAmount" class="form-control" step="0.01" required>
+                    <input type="number" id="txAmount" class="form-control" step="0.01" placeholder="0.00" required>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn-action" onclick="tutupModal()">CANCEL</button>
-                    <button type="submit" class="btn-new-tx">SAVE CHANGES</button>
+                    <button type="button" class="btn-action" onclick="tutupModal()">Batal</button>
+                    <button type="submit" class="btn-new-tx" style="padding: 10px 18px;">Simpan Transaksi</button>
                 </div>
             </form>
         </div>
@@ -257,15 +508,15 @@
                 if (item.cat === 'Sewa Tapak Kedai') kelasKategori = 'cat-sewa';
 
                 tbody.innerHTML += '<tr>' +
-                    '<td>' + item.date + '</td>' +
-                    '<td>' + item.desc + '</td>' +
+                    '<td style="font-weight:600; color:var(--text-muted);">' + item.date + '</td>' +
+                    '<td style="font-weight:600;">' + item.desc + '</td>' +
                     '<td><span class="badge-cat ' + kelasKategori + '">' + item.cat + '</span></td>' +
-                    '<td style="color:' + warnaJenis + '">' + teksJenis + '</td>' +
-                    '<td>RM ' + item.amount.toFixed(2) + '</td>' +
+                    '<td style="color:' + warnaJenis + '; font-weight:700;">' + teksJenis + '</td>' +
+                    '<td style="font-weight:700;">RM ' + item.amount.toFixed(2) + '</td>' +
                     '<td>' +
                         '<div class="action-btns">' +
                             '<button class="btn-action" onclick="editRow(' + indexAsal + ')">Edit</button>' +
-                            '<button class="btn-action btn-delete" onclick="deleteRow(' + indexAsal + ')">Delete</button>' +
+                            '<button class="btn-action btn-delete" onclick="deleteRow(' + indexAsal + ')">Padam</button>' +
                         '</div>' +
                     '</td>' +
                 '</tr>';
@@ -280,8 +531,8 @@
             lblNet.style.color = bakiBersih >= 0 ? '#10b981' : '#f43f5e';
 
             var nilaiMaksimum = Math.max(totalIn, totalOut, 100);
-            document.getElementById('barIncome').style.height = ((totalIn / nilaiMaksimum) * 80) + 'px';
-            document.getElementById('barExpense').style.height = ((totalOut / nilaiMaksimum) * 80) + 'px';
+            document.getElementById('barIncome').style.height = ((totalIn / nilaiMaksimum) * 70) + 'px';
+            document.getElementById('barExpense').style.height = ((totalOut / nilaiMaksimum) * 70) + 'px';
             
             localStorage.setItem(KUNCI_DATA, JSON.stringify(db));
         }
