@@ -1,1 +1,449 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cik Ita Yammy Station - Cash Flow</title>
+    <!-- Google Font: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #db2777;
+            --primary-hover: #be185d;
+            --primary-light: #fdf2f8;
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+        }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { display: flex; background-color: var(--bg-main); color: var(--text-main); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+        
+        /* Navigation Sidebar */
+        .sidebar { 
+            width: 270px; 
+            background-color: var(--bg-card); 
+            padding: 28px 20px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 32px; 
+            border-right: 1px solid var(--border); 
+            position: fixed; 
+            height: 100vh; 
+            z-index: 10;
+        }
+        .logo-container { display: flex; align-items: center; gap: 12px; padding: 0 4px; }
+        .logo-box { 
+            background: linear-gradient(135deg, #be185d 0%, #db2777 100%); 
+            color: #ffffff; 
+            width: 44px; 
+            height: 44px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: var(--radius-md); 
+            flex-shrink: 0; 
+            box-shadow: 0 4px 12px rgba(219, 39, 119, 0.3);
+        }
+        .logo-text { font-size: 15px; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: -0.3px; line-height: 1.2; }
+        .logo-text span { color: var(--primary); }
+        
+        .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+        .nav-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            padding: 12px 16px; 
+            color: var(--text-muted); 
+            text-decoration: none; 
+            font-size: 14px; 
+            font-weight: 600; 
+            border-radius: var(--radius-md); 
+            transition: all 0.2s ease;
+        }
+        .nav-item:hover { color: var(--primary); background-color: var(--primary-light); }
+        .nav-item.active { color: #ffffff; background-color: var(--primary); box-shadow: 0 4px 12px rgba(219, 39, 119, 0.25); }
+        .nav-item svg { width: 18px; height: 18px; fill: currentColor; }
+
+        /* Main Content */
+        .main-content { margin-left: 270px; padding: 40px 48px; width: calc(100% - 270px); display: flex; flex-direction: column; gap: 28px; }
+        
+        /* Header */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-card);
+            padding: 24px 32px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+        }
+        .page-title { font-size: 22px; font-weight: 800; color: var(--text-main); letter-spacing: -0.3px; }
+        .page-subtitle { font-size: 13px; color: var(--text-muted); font-weight: 500; margin-top: 4px; }
+        
+        .filter-select { 
+            padding: 10px 16px; 
+            background-color: var(--bg-main); 
+            border: 1px solid var(--border); 
+            color: var(--text-main); 
+            border-radius: 10px; 
+            outline: none; 
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Metric Cards */
+        .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .metric-card { 
+            background-color: var(--bg-card); 
+            border: 1px solid var(--border); 
+            border-radius: var(--radius-lg); 
+            padding: 20px 24px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+        .metric-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; }
+        .metric-card.inflow::before { background-color: #10b981; }
+        .metric-card.outflow::before { background-color: #f43f5e; }
+        .metric-card.net::before { background-color: #0ea5e9; }
+        .metric-card.status::before { background-color: #8b5cf6; }
+
+        .metric-title { font-size: 12px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .metric-value { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; white-space: nowrap; }
+        .status-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-top: 6px; }
+
+        /* Section Panels */
+        .grid-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .panel-card { 
+            background-color: var(--bg-card); 
+            border: 1px solid var(--border); 
+            border-radius: var(--radius-lg); 
+            padding: 24px; 
+            box-shadow: var(--shadow-md); 
+        }
+        .panel-title { font-size: 16px; font-weight: 800; color: var(--text-main); margin-bottom: 18px; display: flex; justify-content: space-between; align-items: center; }
+
+        /* Progress Bar Ratio */
+        .ratio-container { margin-top: 12px; }
+        .ratio-bar-bg { height: 16px; width: 100%; background-color: #f1f5f9; border-radius: 10px; overflow: hidden; display: flex; }
+        .ratio-bar-in { background-color: #10b981; height: 100%; transition: width 0.4s ease; }
+        .ratio-bar-out { background-color: #f43f5e; height: 100%; transition: width 0.4s ease; }
+        .ratio-labels { display: flex; justify-content: space-between; margin-top: 10px; font-size: 13px; font-weight: 700; }
+
+        /* Breakdown Progress Lists */
+        .progress-item { margin-bottom: 16px; }
+        .progress-info { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+        .progress-bar-bg { height: 8px; background-color: #f1f5f9; border-radius: 6px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; border-radius: 6px; transition: width 0.4s ease; }
+
+        /* Data Table */
+        table { width: 100%; border-collapse: separate; border-spacing: 0; }
+        th { 
+            padding: 14px 18px; 
+            color: var(--text-muted); 
+            font-size: 12px; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+            border-bottom: 1px solid var(--border); 
+            text-align: left; 
+            background-color: #fafafa; 
+        }
+        td { padding: 14px 18px; font-size: 14px; font-weight: 500; border-bottom: 1px solid var(--border); }
+        tbody tr:hover { background-color: #f8fafc; }
+        tbody tr:last-child td { border-bottom: none; }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="logo-container">
+            <div class="logo-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+            </div>
+            <span class="logo-text">Cik Ita<br><span>Yammy Station</span></span>
+        </div>
+        <ul class="nav-menu">
+            <li>
+                <a href="index.html" class="nav-item">
+                    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                    Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="accounts.html" class="nav-item">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                    Accounts
+                </a>
+            </li>
+            <li>
+                <a href="cashflow.html" class="nav-item active">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                    Cash Flow
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        
+        <!-- Header -->
+        <div class="page-header">
+            <div>
+                <div class="page-title">Analisis Aliran Tunai (Cash Flow)</div>
+                <div class="page-subtitle">Pantau kemasukan dan pengeluaran tunai perniagaan anda secara automatik.</div>
+            </div>
+            <div>
+                <select id="monthFilter" class="filter-select" onchange="kemaskiniCashFlow()">
+                    <option value="ALL">Semua Rekod</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Metrics Overview -->
+        <div class="summary-grid">
+            <div class="metric-card inflow">
+                <div class="metric-title">Aliran Tunai Masuk</div>
+                <div class="metric-value" id="cfInflow" style="color: #10b981;">RM 0.00</div>
+            </div>
+            <div class="metric-card outflow">
+                <div class="metric-title">Aliran Tunai Keluar</div>
+                <div class="metric-value" id="cfOutflow" style="color: #f43f5e;">RM 0.00</div>
+            </div>
+            <div class="metric-card net">
+                <div class="metric-title">Baki Tunai Bersih</div>
+                <div class="metric-value" id="cfNet">RM 0.00</div>
+            </div>
+            <div class="metric-card status">
+                <div class="metric-title">Status Aliran</div>
+                <div id="cfStatus" class="status-badge" style="background:#dcfce7; color:#15803d;">Sihat</div>
+            </div>
+        </div>
+
+        <!-- Visual Analysis Ratio -->
+        <div class="panel-card">
+            <div class="panel-title">Nisbah Aliran Tunai (Masuk vs Keluar)</div>
+            <div class="ratio-container">
+                <div class="ratio-bar-bg">
+                    <div id="barInRatio" class="ratio-bar-in" style="width: 50%;"></div>
+                    <div id="barOutRatio" class="ratio-bar-out" style="width: 50%;"></div>
+                </div>
+                <div class="ratio-labels">
+                    <span style="color: #10b981;" id="lblInPercent">Masuk: 0%</span>
+                    <span style="color: #f43f5e;" id="lblOutPercent">Keluar: 0%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Two Column Category Analysis -->
+        <div class="grid-two-col">
+            <!-- Category Expenses Breakdown -->
+            <div class="panel-card">
+                <div class="panel-title">Pecahan Perbelanjaan Mengikut Kategori</div>
+                <div id="expenseCategoryList">
+                    <div style="color:var(--text-muted); font-size:13px;">Tiada data perbelanjaan.</div>
+                </div>
+            </div>
+
+            <!-- Category Income Breakdown -->
+            <div class="panel-card">
+                <div class="panel-title">Pecahan Pendapatan Mengikut Kategori</div>
+                <div id="incomeCategoryList">
+                    <div style="color:var(--text-muted); font-size:13px;">Tiada data pendapatan.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Cash Flow Log -->
+        <div class="panel-card">
+            <div class="panel-title">Penyata Ringkas Pergerakan Tunai</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tarikh</th>
+                        <th>Keterangan</th>
+                        <th>Kategori</th>
+                        <th>Jenis</th>
+                        <th>Jumlah (RM)</th>
+                    </tr>
+                </thead>
+                <tbody id="cfTableBody"></tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+        var KUNCI_DATA = 'monarch_final_v3';
+
+        var db = JSON.parse(localStorage.getItem(KUNCI_DATA)) || [
+            { date: '2026-07-07', desc: 'Jualan Air Ice Blended', cat: 'Food & Drink', type: 'Deposit', amount: 450.00 },
+            { date: '2026-07-07', desc: 'Beli Mesin Blender Baharu', cat: 'Asset', type: 'Expense', amount: 350.00 },
+            { date: '2026-07-07', desc: 'Beli Ais & Susu Pekat', cat: 'Food & Drink', type: 'Expense', amount: 85.00 }
+        ];
+
+        function muatPilihanBulan() {
+            var select = document.getElementById('monthFilter');
+            var bulanSet = new Set();
+
+            db.forEach(function(item) {
+                if (item.date) {
+                    var bulanTahun = item.date.substring(0, 7); // Format YYYY-MM
+                    bulanSet.add(bulanTahun);
+                }
+            });
+
+            select.innerHTML = '<option value="ALL">Semua Rekod</option>';
+            bulanSet.forEach(function(bt) {
+                select.innerHTML += '<option value="' + bt + '">' + bt + '</option>';
+            });
+        }
+
+        function kemaskiniCashFlow() {
+            var bulanDipilih = document.getElementById('monthFilter').value;
+            
+            var dataDitapis = db.filter(function(item) {
+                if (bulanDipilih === 'ALL') return true;
+                return item.date && item.date.indexOf(bulanDipilih) === 0;
+            });
+
+            var totalIn = 0;
+            var totalOut = 0;
+            var expCatMap = {};
+            var incCatMap = {};
+
+            dataDitapis.forEach(function(item) {
+                if (item.type === 'Deposit') {
+                    totalIn += item.amount;
+                    incCatMap[item.cat] = (incCatMap[item.cat] || 0) + item.amount;
+                } else {
+                    totalOut += item.amount;
+                    expCatMap[item.cat] = (expCatMap[item.cat] || 0) + item.amount;
+                }
+            });
+
+            var bakiBersih = totalIn - totalOut;
+
+            // Render Metrics
+            document.getElementById('cfInflow').innerText = 'RM ' + totalIn.toFixed(2);
+            document.getElementById('cfOutflow').innerText = 'RM ' + totalOut.toFixed(2);
+            
+            var cfNet = document.getElementById('cfNet');
+            cfNet.innerText = 'RM ' + bakiBersih.toFixed(2);
+            cfNet.style.color = bakiBersih >= 0 ? '#10b981' : '#f43f5e';
+
+            // Status Badge
+            var cfStatus = document.getElementById('cfStatus');
+            if (bakiBersih > 0) {
+                cfStatus.innerText = 'Aliran Positif (Sihat)';
+                cfStatus.style.background = '#dcfce7';
+                cfStatus.style.color = '#15803d';
+            } else if (bakiBersih === 0) {
+                cfStatus.innerText = 'Seimbang';
+                cfStatus.style.background = '#e0f2fe';
+                cfStatus.style.color = '#0369a1';
+            } else {
+                cfStatus.innerText = 'Defisit (Perlu Perhatian)';
+                cfStatus.style.background = '#ffe4e6';
+                cfStatus.style.color = '#be123c';
+            }
+
+            // Ratio Bar Calculations
+            var jumlahKeseluruhan = totalIn + totalOut;
+            var inPercent = jumlahKeseluruhan > 0 ? ((totalIn / jumlahKeseluruhan) * 100).toFixed(1) : 50;
+            var outPercent = jumlahKeseluruhan > 0 ? ((totalOut / jumlahKeseluruhan) * 100).toFixed(1) : 50;
+
+            document.getElementById('barInRatio').style.width = inPercent + '%';
+            document.getElementById('barOutRatio').style.width = outPercent + '%';
+            document.getElementById('lblInPercent').innerText = 'Masuk: ' + inPercent + '%';
+            document.getElementById('lblOutPercent').innerText = 'Keluar: ' + outPercent + '%';
+
+            // Render Category Progress (Expenses)
+            var expListContainer = document.getElementById('expenseCategoryList');
+            expListContainer.innerHTML = '';
+            if (Object.keys(expCatMap).length === 0) {
+                expListContainer.innerHTML = '<div style="color:var(--text-muted); font-size:13px;">Tiada data perbelanjaan.</div>';
+            } else {
+                for (var cat in expCatMap) {
+                    var peratus = totalOut > 0 ? ((expCatMap[cat] / totalOut) * 100).toFixed(1) : 0;
+                    expListContainer.innerHTML += `
+                        <div class="progress-item">
+                            <div class="progress-info">
+                                <span>${cat}</span>
+                                <span>RM ${expCatMap[cat].toFixed(2)} (${peratus}%)</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill" style="width: ${peratus}%; background-color: #f43f5e;"></div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            // Render Category Progress (Income)
+            var incListContainer = document.getElementById('incomeCategoryList');
+            incListContainer.innerHTML = '';
+            if (Object.keys(incCatMap).length === 0) {
+                incListContainer.innerHTML = '<div style="color:var(--text-muted); font-size:13px;">Tiada data pendapatan.</div>';
+            } else {
+                for (var catIn in incCatMap) {
+                    var peratusIn = totalIn > 0 ? ((incCatMap[catIn] / totalIn) * 100).toFixed(1) : 0;
+                    incListContainer.innerHTML += `
+                        <div class="progress-item">
+                            <div class="progress-info">
+                                <span>${catIn}</span>
+                                <span>RM ${incCatMap[catIn].toFixed(2)} (${peratusIn}%)</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill" style="width: ${peratusIn}%; background-color: #10b981;"></div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            // Render Cash Flow Statement Table
+            var tbody = document.getElementById('cfTableBody');
+            tbody.innerHTML = '';
+            if (dataDitapis.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Tiada rekod dijumpai.</td></tr>';
+            } else {
+                dataDitapis.forEach(function(item) {
+                    var warnaJenis = item.type === 'Deposit' ? '#10b981' : '#f43f5e';
+                    var tanda = item.type === 'Deposit' ? '+ ' : '- ';
+                    tbody.innerHTML += `
+                        <tr>
+                            <td style="font-weight:600; color:var(--text-muted);">${item.date}</td>
+                            <td style="font-weight:600;">${item.desc}</td>
+                            <td>${item.cat}</td>
+                            <td style="color:${warnaJenis}; font-weight:700;">${item.type === 'Deposit' ? 'Aliran Masuk' : 'Aliran Keluar'}</td>
+                            <td style="color:${warnaJenis}; font-weight:800; white-space:nowrap;">${tanda}RM ${item.amount.toFixed(2)}</td>
+                        </tr>
+                    `;
+                });
+            }
+        }
+
+        window.onload = function() {
+            muatPilihanBulan();
+            kemaskiniCashFlow();
+        };
+    </script>
+</body>
+</html>
